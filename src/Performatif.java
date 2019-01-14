@@ -5,12 +5,6 @@ public class Performatif {
     private Date deadLine;
     private Action action;
 
-    public Performatif() {
-        this.billet = new Billet();
-        this.deadLine = new Date();
-        this.action = Action.ACTION1;
-    }
-
     public Billet getBillet() {
         return billet;
     }

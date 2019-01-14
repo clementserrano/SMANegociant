@@ -8,9 +8,28 @@ public class Negociant extends Agent {
     private BoiteAuxLettres<Fournisseur> batFournisseurs;
 
     private Lieu destinationSouhaitee;
-    private int budgetSouhaitee;
+    private Integer budgetSouhaitee;
     private Date dateAchatAuPlusTard;
-    private int valeurDepart;
+
+    private Integer valeurDepart;
+    private Integer frequenceSoumission;
+
+    public Negociant() {
+        fournisseurs = new ArrayList<>();
+        batFournisseurs = BoiteAuxLettres.getBatFournisseur();
+    }
+
+    public void recupererCourrier(){
+        
+    }
+
+    public void calculerFrequenceSoumission() {
+
+    }
+
+    public void calculerCroissanceOffre() {
+
+    }
 
     public List<Fournisseur> getFournisseurs() {
         return fournisseurs;
@@ -36,11 +55,11 @@ public class Negociant extends Agent {
         this.destinationSouhaitee = destinationSouhaitee;
     }
 
-    public int getBudgetSouhaitee() {
+    public Integer getBudgetSouhaitee() {
         return budgetSouhaitee;
     }
 
-    public void setBudgetSouhaitee(int budgetSouhaitee) {
+    public void setBudgetSouhaitee(Integer budgetSouhaitee) {
         this.budgetSouhaitee = budgetSouhaitee;
     }
 
@@ -52,34 +71,19 @@ public class Negociant extends Agent {
         this.dateAchatAuPlusTard = dateAchatAuPlusTard;
     }
 
-    public int getValeurDepart() {
+    public Integer getValeurDepart() {
         return valeurDepart;
     }
 
-    public void setValeurDepart(int valeurDepart) {
+    public void setValeurDepart(Integer valeurDepart) {
         this.valeurDepart = valeurDepart;
     }
 
-    public int getFrequenceSoumission() {
+    public Integer getFrequenceSoumission() {
         return frequenceSoumission;
     }
 
-    public void setFrequenceSoumission(int frequenceSoumission) {
+    public void setFrequenceSoumission(Integer frequenceSoumission) {
         this.frequenceSoumission = frequenceSoumission;
-    }
-
-    private int frequenceSoumission;
-
-    public Negociant() {
-        fournisseurs = new ArrayList<>();
-        batFournisseurs = new BoiteAuxLettres<>();
-    }
-
-    public void calculerFrequenceSoumission() {
-
-    }
-
-    public void calculerCroissanceOffre() {
-
     }
 }

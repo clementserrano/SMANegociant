@@ -10,7 +10,7 @@ public class BoiteAuxLettres<T> {
     private static BoiteAuxLettres<Fournisseur> batFournisseur = new BoiteAuxLettres<>();
     private static BoiteAuxLettres<Negociant> batNegociant = new BoiteAuxLettres<>();
 
-    public BoiteAuxLettres() {
+    private BoiteAuxLettres() {
         mapMessages = new HashMap<>();
     }
 

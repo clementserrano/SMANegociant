@@ -1,6 +1,5 @@
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Fournisseur extends Agent {
 
@@ -12,7 +11,40 @@ public class Fournisseur extends Agent {
 
     public Fournisseur() {
         negociants = new ArrayList<>();
-        batNegociants = new BoiteAuxLettres<>();
+        batNegociants = BoiteAuxLettres.getBatNegociant();
+    }
+
+    public void proposeOffre() {
+        List<Negociant> negociantsInterresses = negociants.stream()
+                .filter(negociant ->
+                        negociant.getDestinationSouhaitee().equals(billet.getLieuArrivee())
+                                && negociant.getDateAchatAuPlusTard().before(dateVenteAuPlusTard))
+                .sorted(Comparator.comparing(Negociant::getBudgetSouhaitee))
+                .collect(Collectors.toList());
+
+        negociantsInterresses.stream().map(negociant -> {
+            Message message = new Message();
+            message.setAgentDestinataire(negociant);
+            message.setAgentEmetteur(this);
+
+            Performatif performatif = new Performatif();
+            performatif.setAction(Action.CFP);
+            performatif.setBillet(this.billet);
+
+            Date deadline = new Date();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(deadline);
+            calendar.add(Calendar.DATE, 10); // 10 jours
+            deadline = calendar.getTime();
+
+            performatif.setDeadLine(deadline);
+
+            message.setPerformatif(performatif);
+
+            batNegociants.poster(negociant, message);
+            return null;
+        });
+
     }
 
     public List<Negociant> getNegociants() {
