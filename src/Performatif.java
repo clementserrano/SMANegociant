@@ -11,6 +11,12 @@ public class Performatif {
         this.action = Action.ACTION1;
     }
 
+    public Performatif(Billet billet, Date deadLine, Action action) {
+        this.billet = billet;
+        this.deadLine = deadLine;
+        this.action = action;
+    }
+
     public Billet getBillet() {
         return billet;
     }
