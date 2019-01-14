@@ -1,27 +1,27 @@
 public class Message {
-    private Agent agentEmetteur;
-    private Agent agentDestinataire;
+    private String agentEmetteur;
+    private String agentDestinataire;
     private Performatif performatif;
 
     public Message() {
-        this.agentEmetteur = new Agent();
-        this.agentDestinataire = new Agent();
+        this.agentEmetteur = new String();
+        this.agentDestinataire = new String();
         this.performatif = new Performatif();
     }
 
-    public Agent getAgentEmetteur() {
+    public String getAgentEmetteur() {
         return agentEmetteur;
     }
 
-    public void setAgentEmetteur(Agent agentEmetteur) {
+    public void setAgentEmetteur(String agentEmetteur) {
         this.agentEmetteur = agentEmetteur;
     }
 
-    public Agent getAgentDestinataire() {
+    public String getAgentDestinataire() {
         return agentDestinataire;
     }
 
-    public void setAgentDestinataire(Agent agentDestinataire) {
+    public void setAgentDestinataire(String agentDestinataire) {
         this.agentDestinataire = agentDestinataire;
     }
 
