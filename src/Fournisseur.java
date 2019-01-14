@@ -6,7 +6,7 @@ public class Fournisseur extends Agent {
 
     private List<Negociant> negociants;
     private BoiteAuxLettres<Negociant> batNegociants;
-    private String billet;
+    private Billet billet;
     private Date dateVenteAuPlusTard;
     private Date dateVenteSouhaitee;
 
@@ -31,11 +31,11 @@ public class Fournisseur extends Agent {
         this.batNegociants = batNegociants;
     }
 
-    public String getBillet() {
+    public Billet getBillet() {
         return billet;
     }
 
-    public void setBillet(String billet) {
+    public void setBillet(Billet billet) {
         this.billet = billet;
     }
 

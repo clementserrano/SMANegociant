@@ -7,7 +7,7 @@ public class Negociant extends Agent {
     private List<Fournisseur> fournisseurs;
     private BoiteAuxLettres<Fournisseur> batFournisseurs;
 
-    private String destinationSouhaitee;
+    private Lieu destinationSouhaitee;
     private int budgetSouhaitee;
     private Date dateAchatAuPlusTard;
     private int valeurDepart;
@@ -28,11 +28,11 @@ public class Negociant extends Agent {
         this.batFournisseurs = batFournisseurs;
     }
 
-    public String getDestinationSouhaitee() {
+    public Lieu getDestinationSouhaitee() {
         return destinationSouhaitee;
     }
 
-    public void setDestinationSouhaitee(String destinationSouhaitee) {
+    public void setDestinationSouhaitee(Lieu destinationSouhaitee) {
         this.destinationSouhaitee = destinationSouhaitee;
     }
 
