@@ -28,4 +28,13 @@ public class Performatif {
     public void setAction(Action action) {
         this.action = action;
     }
+
+    @Override
+    public String toString() {
+        return "Performatif{" +
+                "billet=" + billet +
+                ", deadLine=" + deadLine +
+                ", action=" + action +
+                '}';
+    }
 }

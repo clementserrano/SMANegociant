@@ -46,4 +46,15 @@ public class Billet {
     public void setPrix(Double prix) {
         this.prix = prix;
     }
+
+    @Override
+    public String toString() {
+        return "Billet{" +
+                "lieuDepart=" + lieuDepart +
+                ", lieuArrivee=" + lieuArrivee +
+                ", dateDepart=" + dateDepart +
+                ", dateArrivee=" + dateArrivee +
+                ", prix=" + prix +
+                '}';
+    }
 }
