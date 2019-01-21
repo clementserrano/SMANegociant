@@ -57,7 +57,6 @@ public class Negociant extends Agent implements Runnable {
             switch (message.getPerformatif().getAction()) {
                 case CFP:
                     Billet billet = message.getPerformatif().getBillet();
-                    System.out.println(budgetSouhaiteeMax);
                     if (!billet.getLieuArrivee().equals(destinationSouhaitee)
                             || billet.getPrix() > budgetSouhaiteeMax) {
                         performatif.setAction(Action.REFUSE);

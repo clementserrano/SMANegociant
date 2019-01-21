@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -77,7 +76,7 @@ public class Fournisseur extends Agent implements Runnable {
                     if (derniereOffre == billet.getPrix()) {
                         performatif.setAction(Action.VALIDER);
                         System.out.println(reponse);
-                        batFournisseurs.poster((Fournisseur) message.getAgentEmetteur(), reponse);
+                        batNegociants.poster(message.getAgentEmetteur(), reponse);
                         this.billet = null;
                     }
                     break;
@@ -90,7 +89,7 @@ public class Fournisseur extends Agent implements Runnable {
                     performatif.setAction(Action.CFP);
                     reponse.setPerformatif(performatif);
                     System.out.println(reponse);
-                    batFournisseurs.poster(message.getAgentEmetteur(), reponse);
+                    batNegociants.poster(message.getAgentEmetteur(), reponse);
                     break;
                 case REFUSE:
                     break;
