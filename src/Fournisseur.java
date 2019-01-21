@@ -52,7 +52,6 @@ public class Fournisseur extends Agent implements Runnable {
             performatif.setDeadLine(Utils.datePlusDays(10));
 
             message.setPerformatif(performatif);
-
             batNegociants.poster(negociant, message);
             return null;
         });
@@ -93,9 +92,9 @@ public class Fournisseur extends Agent implements Runnable {
         }
     }
 
-    public Double calculerPrixRetour(Double prixNegociation) {
+    public Double calculerPrixRetour(Double prixRecu) {
         if (avantDerniereOffre == 0) {
-            return (valeurDepart - prixNegociation) * 0.9;
+            return (valeurDepart - prixRecu) * 0.9;
         } else {
             Double ecart = avantDerniereOffre - derniereOffre;
             if (prixMin > derniereOffre - ecart) {

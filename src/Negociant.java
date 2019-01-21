@@ -44,7 +44,6 @@ public class Negociant extends Agent implements Runnable {
 
     public void recupererCourrier() {
         Message message = batNegociants.recuperer(this);
-
         if (message != null) {
             Message reponse = new Message();
             reponse.setAgentEmetteur(this);
@@ -84,13 +83,13 @@ public class Negociant extends Agent implements Runnable {
         }
     }
 
-    public Double calculerPrixRetour(Double price) {
+    public Double calculerPrixRetour(Double prixRecu) {
         if (avantDerniereOffre == 0) {
             return valeurDepart;
         } else {
             Double ecart = avantDerniereOffre - derniereOffre;
             if (ecart > pourcentCroissance) {
-                return price + derniereOffre * pourcentCroissance;
+                return prixRecu + derniereOffre * pourcentCroissance;
             } else {
                 return derniereSoumission + ecart;
             }
