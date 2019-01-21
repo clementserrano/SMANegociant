@@ -40,8 +40,7 @@ public class Fournisseur extends Agent implements Runnable {
                 .sorted(Comparator.comparing(Negociant::getBudgetSouhaitee))
                 .collect(Collectors.toList());
 
-        System.out.println(negociantsInterresses);
-        negociantsInterresses.stream().map(negociant -> {
+        negociantsInterresses.stream().forEach(negociant -> {
             Message message = new Message();
             message.setAgentDestinataire(negociant);
             message.setAgentEmetteur(this);
@@ -53,18 +52,14 @@ public class Fournisseur extends Agent implements Runnable {
             performatif.setDeadLine(Utils.datePlusDays(10));
 
             message.setPerformatif(performatif);
-            System.out.println("F:envoit " + message);
             batNegociants.poster(negociant, message);
-            return null;
         });
 
     }
 
     public void recupererCourrier() {
         Message message = batFournisseurs.recuperer(this);
-
         if (message != null) {
-            System.out.println("F: recoit " +message);
             Message reponse = new Message();
             reponse.setAgentEmetteur(this);
             reponse.setAgentDestinataire(message.getAgentEmetteur());
@@ -93,7 +88,6 @@ public class Fournisseur extends Agent implements Runnable {
                 case REFUSE:
                     break;
             }
-            System.out.println(reponse);
         }
     }
 

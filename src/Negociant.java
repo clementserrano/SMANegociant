@@ -46,7 +46,6 @@ public class Negociant extends Agent implements Runnable {
         Message message = batNegociants.recuperer(this);
 
         if (message != null) {
-            System.out.println("N: recoit " + message);
             Message reponse = new Message();
             reponse.setAgentEmetteur(this);
             reponse.setAgentDestinataire(message.getAgentEmetteur());
@@ -73,16 +72,14 @@ public class Negociant extends Agent implements Runnable {
                             performatif.setAction(Action.CONTRE_OFFRE);
                         }
                     }
-
                     performatif.setBillet(billet);
-                    System.out.println("N: recpond " + reponse);
+                    reponse.setPerformatif(performatif);
                     batFournisseurs.poster((Fournisseur) message.getAgentEmetteur(), reponse);
                     break;
                 case VALIDER:
                     billetAchete = message.getPerformatif().getBillet();
                     break;
             }
-            System.out.println(reponse);
         }
     }
 

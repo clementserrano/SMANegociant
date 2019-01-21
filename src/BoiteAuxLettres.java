@@ -20,7 +20,7 @@ public class BoiteAuxLettres<T> {
     }
 
     public Message recuperer(T proprietaire) {
-        if (mapMessages.get(proprietaire) == null) return null;
+        if (mapMessages.get(proprietaire) == null || mapMessages.get(proprietaire).size() == 0) return null;
         Message courrier = mapMessages.get(proprietaire).get(0);
         mapMessages.get(proprietaire).remove(0);
         return courrier;
@@ -37,6 +37,7 @@ public class BoiteAuxLettres<T> {
     public static BoiteAuxLettres<Fournisseur> getBatFournisseur() {
         return batFournisseur;
     }
+
     public static BoiteAuxLettres<Negociant> getBatNegociant() {
         return batNegociant;
     }

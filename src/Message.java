@@ -26,4 +26,13 @@ public class Message {
     public void setPerformatif(Performatif performatif) {
         this.performatif = performatif;
     }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "agentEmetteur=" + agentEmetteur +
+                ", agentDestinataire=" + agentDestinataire +
+                ", performatif=" + performatif +
+                '}';
+    }
 }
