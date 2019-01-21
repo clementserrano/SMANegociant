@@ -76,6 +76,7 @@ public class Fournisseur extends Agent implements Runnable {
                     if (derniereOffre == billet.getPrix()) {
                         performatif.setAction(Action.VALIDER);
                         batFournisseurs.poster((Fournisseur) message.getAgentEmetteur(), reponse);
+                        this.billet = null;
                     }
                     break;
                 case CONTRE_OFFRE:
@@ -89,6 +90,7 @@ public class Fournisseur extends Agent implements Runnable {
                 case REFUSE:
                     break;
             }
+            System.out.println(reponse);
         }
     }
 

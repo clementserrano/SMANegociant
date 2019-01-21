@@ -44,6 +44,7 @@ public class Negociant extends Agent implements Runnable {
 
     public void recupererCourrier() {
         Message message = batNegociants.recuperer(this);
+
         if (message != null) {
             Message reponse = new Message();
             reponse.setAgentEmetteur(this);
@@ -80,6 +81,7 @@ public class Negociant extends Agent implements Runnable {
                     billetAchete = message.getPerformatif().getBillet();
                     break;
             }
+            System.out.println(reponse);
         }
     }
 
