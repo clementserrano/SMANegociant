@@ -75,7 +75,7 @@ public class Negociant extends Agent implements Runnable {
             if (ecart > pourcentCroissance) {
                 return price + derniereOffre * pourcentCroissance;
             } else {
-                return
+                return derniereSoumission + ecart;
             }
         }
     }
