@@ -65,7 +65,7 @@ public class Negociant extends Agent implements Runnable {
                         derniereOffre = billet.getPrix();
                         derniereSoumission = calculerPrixRetour(billet.getPrix());
                         if (derniereSoumission < budgetSouhaiteeMin) derniereSoumission = budgetSouhaiteeMin;
-                        if (billet.getPrix() == derniereSoumission) {
+                        if (billet.getPrix() <= derniereSoumission) {
                             performatif.setAction(Action.ACCEPT);
                         } else {
                             billet.setPrix(derniereSoumission);
