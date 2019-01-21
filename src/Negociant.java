@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Negociant extends Agent {
+public class Negociant extends Agent implements Runnable {
 
     private List<Fournisseur> fournisseurs;
     private BoiteAuxLettres<Fournisseur> batFournisseurs;
@@ -30,10 +30,41 @@ public class Negociant extends Agent {
         avantDerniereOffre = 0.0;
         derniereSoumission = 0.0;
         this.valeurDepart = valeurDepart;
+        batNegociants = BoiteAuxLettres.getBatNegociant();
+    }
+
+    @Override
+    public void run() {
+
     }
 
     public void recupererCourrier() {
+        Message message = batNegociants.recuperer(this);
 
+        if (message != null) {
+            Message reponse = new Message();
+            reponse.setAgentEmetteur(this);
+            reponse.setAgentDestinataire(message.getAgentEmetteur());
+
+            Performatif performatif = new Performatif();
+            performatif.setDeadLine(Utils.datePlusDays(10));
+
+            switch (message.getPerformatif().getAction()) {
+                case CFP:
+                    Billet billet = message.getPerformatif().getBillet();
+                    if (!billet.getLieuArrivee().equals(destinationSouhaitee)
+                            || billet.getPrix() > budgetSouhaitee) { // REFUSER
+                        performatif.setAction(Action.REFUSE);
+                    }
+
+                    billet.setPrix(billet.getPrix() + 10);
+                        performatif.setAction(Action.ACCEPT);
+                    performatif.setBillet(billet);
+
+                    batFournisseurs.poster((Fournisseur) message.getAgentEmetteur(), reponse);
+                    break;
+            }
+        }
     }
 
     public Double calculerPrixRetour(Double price) {
@@ -89,20 +120,12 @@ public class Negociant extends Agent {
         this.dateAchatAuPlusTard = dateAchatAuPlusTard;
     }
 
-    public Integer getValeurDepart() {
+    public Double getValeurDepart() {
         return valeurDepart;
     }
 
-    public void setValeurDepart(Integer valeurDepart) {
+    public void setValeurDepart(Double valeurDepart) {
         this.valeurDepart = valeurDepart;
-    }
-
-    public Integer getFrequenceSoumission() {
-        return frequenceSoumission;
-    }
-
-    public void setFrequenceSoumission(Integer frequenceSoumission) {
-        this.frequenceSoumission = frequenceSoumission;
     }
 
     public BoiteAuxLettres<Negociant> getBatNegociants() {
