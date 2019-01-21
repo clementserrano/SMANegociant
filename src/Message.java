@@ -30,9 +30,11 @@ public class Message {
     @Override
     public String toString() {
         return "Message{" +
-                "agentEmetteur=" + agentEmetteur +
-                ", agentDestinataire=" + agentDestinataire +
-                ", performatif=" + performatif +
+                agentEmetteur + "," + agentDestinataire
+                + ",{" + performatif.getBillet().getLieuDepart()
+                + "," + performatif.getBillet().getLieuArrivee()
+                + "," + performatif.getAction()
+                + "," + performatif.getBillet().getPrix() + "}" +
                 '}';
     }
 }
