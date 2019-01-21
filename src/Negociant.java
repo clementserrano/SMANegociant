@@ -5,8 +5,8 @@ import java.util.List;
 public class Negociant extends Agent implements Runnable {
 
     private List<Fournisseur> fournisseurs;
-    private BoiteAuxLettres<Fournisseur> batFournisseurs;
-    private BoiteAuxLettres<Negociant> batNegociants;
+    private BoiteAuxLettres batFournisseurs;
+    private BoiteAuxLettres batNegociants;
 
     private Lieu destinationSouhaitee;
     private Double budgetSouhaiteeMax;
@@ -107,11 +107,11 @@ public class Negociant extends Agent implements Runnable {
         this.fournisseurs = fournisseurs;
     }
 
-    public BoiteAuxLettres<Fournisseur> getBatFournisseurs() {
+    public BoiteAuxLettres getBatFournisseurs() {
         return batFournisseurs;
     }
 
-    public void setBatFournisseurs(BoiteAuxLettres<Fournisseur> batFournisseurs) {
+    public void setBatFournisseurs(BoiteAuxLettres batFournisseurs) {
         this.batFournisseurs = batFournisseurs;
     }
 
@@ -155,11 +155,11 @@ public class Negociant extends Agent implements Runnable {
         this.valeurDepart = valeurDepart;
     }
 
-    public BoiteAuxLettres<Negociant> getBatNegociants() {
+    public BoiteAuxLettres getBatNegociants() {
         return batNegociants;
     }
 
-    public void setBatNegociants(BoiteAuxLettres<Negociant> batNegociants) {
+    public void setBatNegociants(BoiteAuxLettres batNegociants) {
         this.batNegociants = batNegociants;
     }
 }

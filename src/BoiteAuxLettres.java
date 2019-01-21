@@ -3,12 +3,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BoiteAuxLettres<Agent> {
+public class BoiteAuxLettres {
 
     private Map<Agent, List<Message>> mapMessages;
 
-    private static BoiteAuxLettres<Fournisseur> batFournisseur = new BoiteAuxLettres<>();
-    private static BoiteAuxLettres<Negociant> batNegociant = new BoiteAuxLettres<>();
+    private static BoiteAuxLettres batFournisseur = new BoiteAuxLettres();
+    private static BoiteAuxLettres batNegociant = new BoiteAuxLettres();
 
     private BoiteAuxLettres() {
         mapMessages = new HashMap<>();
@@ -34,11 +34,11 @@ public class BoiteAuxLettres<Agent> {
         this.mapMessages = mapMessages;
     }
 
-    public static BoiteAuxLettres<Fournisseur> getBatFournisseur() {
+    public static BoiteAuxLettres getBatFournisseur() {
         return batFournisseur;
     }
 
-    public static BoiteAuxLettres<Negociant> getBatNegociant() {
+    public static BoiteAuxLettres getBatNegociant() {
         return batNegociant;
     }
 }

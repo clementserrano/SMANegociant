@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 public class Fournisseur extends Agent implements Runnable {
 
     private List<Negociant> negociants;
-    private BoiteAuxLettres<Negociant> batNegociants;
-    private BoiteAuxLettres<Fournisseur> batFournisseurs;
+    private BoiteAuxLettres batNegociants;
+    private BoiteAuxLettres batFournisseurs;
     private Billet billet;
     private Date dateVenteAuPlusTard;
     private Date dateVenteSouhaitee;
@@ -87,9 +87,10 @@ public class Fournisseur extends Agent implements Runnable {
                     derniereSoumission = calculerPrixRetour(billet.getPrix());
                     billet.setPrix(derniereSoumission);
                     performatif.setBillet(billet);
+                    performatif.setAction(Action.CFP);
                     reponse.setPerformatif(performatif);
                     System.out.println(reponse);
-                    batFournisseurs.poster((Fournisseur) message.getAgentEmetteur(), reponse);
+                    batFournisseurs.poster(message.getAgentEmetteur(), reponse);
                     break;
                 case REFUSE:
                     break;
@@ -118,11 +119,11 @@ public class Fournisseur extends Agent implements Runnable {
         this.negociants = negociants;
     }
 
-    public BoiteAuxLettres<Negociant> getBatNegociants() {
+    public BoiteAuxLettres getBatNegociants() {
         return batNegociants;
     }
 
-    public void setBatNegociants(BoiteAuxLettres<Negociant> batNegociants) {
+    public void setBatNegociants(BoiteAuxLettres batNegociants) {
         this.batNegociants = batNegociants;
     }
 
@@ -150,11 +151,11 @@ public class Fournisseur extends Agent implements Runnable {
         this.dateVenteSouhaitee = dateVenteSouhaitee;
     }
 
-    public BoiteAuxLettres<Fournisseur> getBatFournisseurs() {
+    public BoiteAuxLettres getBatFournisseurs() {
         return batFournisseurs;
     }
 
-    public void setBatFournisseurs(BoiteAuxLettres<Fournisseur> batFournisseurs) {
+    public void setBatFournisseurs(BoiteAuxLettres batFournisseurs) {
         this.batFournisseurs = batFournisseurs;
     }
 
