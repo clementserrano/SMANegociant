@@ -5,32 +5,32 @@ import java.util.Map;
 
 public class BoiteAuxLettres<T> {
 
-    private Map<T, List<String>> mapMessages;
+    private Map<T, List<Message>> mapMessages;
 
     private static BoiteAuxLettres<Fournisseur> batFournisseur = new BoiteAuxLettres<>();
     private static BoiteAuxLettres<Negociant> batNegociant = new BoiteAuxLettres<>();
 
-    public BoiteAuxLettres() {
+    private BoiteAuxLettres() {
         mapMessages = new HashMap<>();
     }
 
-    public void poster(T destinataire, String message) {
+    public void poster(T destinataire, Message message) {
         if (mapMessages.get(destinataire) == null) mapMessages.put(destinataire, new ArrayList<>());
         mapMessages.get(destinataire).add(message);
     }
 
-    public String recuperer(T proprietaire) {
+    public Message recuperer(T proprietaire) {
         if (mapMessages.get(proprietaire) == null) return null;
-        String courrier = mapMessages.get(proprietaire).get(0);
+        Message courrier = mapMessages.get(proprietaire).get(0);
         mapMessages.get(proprietaire).remove(0);
         return courrier;
     }
 
-    public Map<T, List<String>> getMapMessages() {
+    public Map<T, List<Message>> getMapMessages() {
         return mapMessages;
     }
 
-    public void setMapMessages(Map<T, List<String>> mapMessages) {
+    public void setMapMessages(Map<T, List<Message>> mapMessages) {
         this.mapMessages = mapMessages;
     }
 
