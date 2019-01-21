@@ -22,6 +22,9 @@ public class Fournisseur extends Agent implements Runnable {
         negociants = new ArrayList<>();
         batNegociants = BoiteAuxLettres.getBatNegociant();
         batFournisseurs = BoiteAuxLettres.getBatFournisseur();
+        avantDerniereOffre = 0.0;
+        derniereOffre = 0.0;
+        derniereSoumission = 0.0;
     }
 
     @Override
@@ -37,7 +40,6 @@ public class Fournisseur extends Agent implements Runnable {
                 .filter(negociant ->
                         negociant.getDestinationSouhaitee().equals(billet.getLieuArrivee())
                                 && negociant.getDateAchatAuPlusTard().before(dateVenteAuPlusTard))
-                .sorted(Comparator.comparing(Negociant::getBudgetSouhaitee))
                 .collect(Collectors.toList());
 
         negociantsInterresses.stream().forEach(negociant -> {
@@ -85,6 +87,7 @@ public class Fournisseur extends Agent implements Runnable {
                     derniereSoumission = calculerPrixRetour(billet.getPrix());
                     billet.setPrix(derniereSoumission);
                     performatif.setBillet(billet);
+                    reponse.setPerformatif(performatif);
                     System.out.println(reponse);
                     batFournisseurs.poster((Fournisseur) message.getAgentEmetteur(), reponse);
                     break;
