@@ -72,16 +72,14 @@ public class Negociant extends Agent implements Runnable {
                             performatif.setAction(Action.CONTRE_OFFRE);
                         }
                     }
-
                     performatif.setBillet(billet);
-
+                    reponse.setPerformatif(performatif);
                     batFournisseurs.poster((Fournisseur) message.getAgentEmetteur(), reponse);
                     break;
                 case VALIDER:
                     billetAchete = message.getPerformatif().getBillet();
                     break;
             }
-            System.out.println(reponse);
         }
     }
 

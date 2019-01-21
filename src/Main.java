@@ -21,6 +21,7 @@ public class Main {
         billet.setDateDepart(sdf.parse("29/01/2019"));
         billet.setDateArrivee(sdf.parse("30/01/2019"));
 
+        fournisseur.setValeurDepart(400.0);
         fournisseur.setBillet(billet);
         fournisseur.setDateVenteAuPlusTard(sdf.parse("25/01/2019"));
         fournisseur.getNegociants().add(negociant);
