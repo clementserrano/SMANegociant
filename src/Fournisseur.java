@@ -5,6 +5,7 @@ public class Fournisseur extends Agent {
 
     private List<Negociant> negociants;
     private BoiteAuxLettres<Negociant> batNegociants;
+    private BoiteAuxLettres<Fournisseur> batFournisseurs;
     private Billet billet;
     private Date dateVenteAuPlusTard;
     private Date dateVenteSouhaitee;
@@ -85,5 +86,13 @@ public class Fournisseur extends Agent {
 
     public void setDateVenteSouhaitee(Date dateVenteSouhaitee) {
         this.dateVenteSouhaitee = dateVenteSouhaitee;
+    }
+
+    public BoiteAuxLettres<Fournisseur> getBatFournisseurs() {
+        return batFournisseurs;
+    }
+
+    public void setBatFournisseurs(BoiteAuxLettres<Fournisseur> batFournisseurs) {
+        this.batFournisseurs = batFournisseurs;
     }
 }

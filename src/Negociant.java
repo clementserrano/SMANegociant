@@ -6,6 +6,7 @@ public class Negociant extends Agent {
 
     private List<Fournisseur> fournisseurs;
     private BoiteAuxLettres<Fournisseur> batFournisseurs;
+    private BoiteAuxLettres<Negociant> batNegociants;
 
     private Lieu destinationSouhaitee;
     private Integer budgetSouhaitee;
@@ -19,8 +20,8 @@ public class Negociant extends Agent {
         batFournisseurs = BoiteAuxLettres.getBatFournisseur();
     }
 
-    public void recupererCourrier(){
-        
+    public void recupererCourrier() {
+
     }
 
     public void calculerFrequenceSoumission() {
@@ -85,5 +86,13 @@ public class Negociant extends Agent {
 
     public void setFrequenceSoumission(Integer frequenceSoumission) {
         this.frequenceSoumission = frequenceSoumission;
+    }
+
+    public BoiteAuxLettres<Negociant> getBatNegociants() {
+        return batNegociants;
+    }
+
+    public void setBatNegociants(BoiteAuxLettres<Negociant> batNegociants) {
+        this.batNegociants = batNegociants;
     }
 }
