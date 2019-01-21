@@ -12,24 +12,41 @@ public class Negociant extends Agent {
     private Integer budgetSouhaitee;
     private Date dateAchatAuPlusTard;
 
-    private Integer valeurDepart;
-    private Integer frequenceSoumission;
+    private Double valeurDepart;
+    private Integer nbSoumission;
+    private Integer nbSoumissionMax;
+    private Double pourcentCroissance;
+    private Double avantDerniereOffre;
+    private Double derniereOffre;
+    private Double derniereSoumission;
 
-    public Negociant() {
+    public Negociant(Double valeurDepart, Integer nbSoumissionMax, Double pourcentCroissance) {
         fournisseurs = new ArrayList<>();
         batFournisseurs = BoiteAuxLettres.getBatFournisseur();
+        nbSoumission = 0;
+        this.nbSoumissionMax = nbSoumissionMax;
+        this.pourcentCroissance = pourcentCroissance;
+        derniereOffre = 0.0;
+        avantDerniereOffre = 0.0;
+        derniereSoumission = 0.0;
+        this.valeurDepart = valeurDepart;
     }
 
     public void recupererCourrier() {
 
     }
 
-    public void calculerFrequenceSoumission() {
-
-    }
-
-    public void calculerCroissanceOffre() {
-
+    public Double calculerPrixRetour(Double price) {
+        if (avantDerniereOffre == 0) {
+            return valeurDepart;
+        } else {
+            Double ecart = avantDerniereOffre - derniereOffre;
+            if (ecart > pourcentCroissance) {
+                return price + derniereOffre * pourcentCroissance;
+            } else {
+                return
+            }
+        }
     }
 
     public List<Fournisseur> getFournisseurs() {
