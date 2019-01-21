@@ -9,7 +9,8 @@ public class Negociant extends Agent implements Runnable {
     private BoiteAuxLettres<Negociant> batNegociants;
 
     private Lieu destinationSouhaitee;
-    private Double budgetSouhaitee;
+    private Double budgetSouhaiteeMax;
+    private Double budgetSouhaiteeMin;
     private Date dateAchatAuPlusTard;
 
     private Double valeurDepart;
@@ -56,14 +57,15 @@ public class Negociant extends Agent implements Runnable {
             switch (message.getPerformatif().getAction()) {
                 case CFP:
                     Billet billet = message.getPerformatif().getBillet();
+                    System.out.println(budgetSouhaiteeMax);
                     if (!billet.getLieuArrivee().equals(destinationSouhaitee)
-                            || billet.getPrix() > budgetSouhaitee) {
+                            || billet.getPrix() > budgetSouhaiteeMax) {
                         performatif.setAction(Action.REFUSE);
                     } else {
                         avantDerniereOffre = derniereOffre;
                         derniereOffre = billet.getPrix();
                         derniereSoumission = calculerPrixRetour(billet.getPrix());
-                        if (derniereSoumission < budgetSouhaitee) derniereSoumission = budgetSouhaitee;
+                        if (derniereSoumission < budgetSouhaiteeMin) derniereSoumission = budgetSouhaiteeMin;
                         if (billet.getPrix() == derniereSoumission) {
                             performatif.setAction(Action.ACCEPT);
                         } else {
@@ -121,12 +123,20 @@ public class Negociant extends Agent implements Runnable {
         this.destinationSouhaitee = destinationSouhaitee;
     }
 
-    public Double getBudgetSouhaitee() {
-        return budgetSouhaitee;
+    public Double getBudgetSouhaiteeMin() {
+        return budgetSouhaiteeMin;
     }
 
-    public void setBudgetSouhaitee(Double budgetSouhaitee) {
-        this.budgetSouhaitee = budgetSouhaitee;
+    public void setBudgetSouhaiteeMin(Double budgetSouhaitee) {
+        this.budgetSouhaiteeMin = budgetSouhaitee;
+    }
+
+    public Double getBudgetSouhaiteeMax() {
+        return budgetSouhaiteeMax;
+    }
+
+    public void setBudgetSouhaiteeMax(Double budgetSouhaitee) {
+        this.budgetSouhaiteeMax = budgetSouhaitee;
     }
 
     public Date getDateAchatAuPlusTard() {

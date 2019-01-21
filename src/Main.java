@@ -9,7 +9,8 @@ public class Main {
         Negociant negociant = new Negociant(100.0, 5, 30.0);
         negociant.setDestinationSouhaitee(Lieu.MARSEILLE);
         negociant.setValeurDepart(50.0);
-        negociant.setBudgetSouhaitee(110.0);
+        negociant.setBudgetSouhaiteeMin(110.0);
+        negociant.setBudgetSouhaiteeMax(500.0);
         negociant.setDateAchatAuPlusTard(sdf.parse("20/01/2019"));
 
         Fournisseur fournisseur = new Fournisseur();
