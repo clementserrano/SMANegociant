@@ -12,8 +12,8 @@ public class Fournisseur extends Agent implements Runnable {
     private Billet billet;
     private Date dateVenteAuPlusTard;
     private Date dateVenteSouhaitee;
-    private Integer valeurDepart;
-    private Integer prixMin;
+    private Double valeurDepart;
+    private Double prixMin;
 
     public Fournisseur() {
         negociants = new ArrayList<>();
@@ -23,7 +23,9 @@ public class Fournisseur extends Agent implements Runnable {
 
     @Override
     public void run() {
-
+        while(billet != null){
+            proposeOffre();
+        }
     }
 
     public void proposeOffre() {
@@ -101,19 +103,19 @@ public class Fournisseur extends Agent implements Runnable {
         this.batFournisseurs = batFournisseurs;
     }
 
-    public Integer getValeurDepart() {
+    public Double getValeurDepart() {
         return valeurDepart;
     }
 
-    public void setValeurDepart(Integer valeurDepart) {
+    public void setValeurDepart(Double valeurDepart) {
         this.valeurDepart = valeurDepart;
     }
 
-    public Integer getPrixMin() {
+    public Double getPrixMin() {
         return prixMin;
     }
 
-    public void setPrixMin(Integer prixMin) {
+    public void setPrixMin(Double prixMin) {
         this.prixMin = prixMin;
     }
 }

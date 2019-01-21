@@ -37,7 +37,9 @@ public class Negociant extends Agent implements Runnable {
 
     @Override
     public void run() {
-
+        while (billetAchete == null) {
+            recupererCourrier();
+        }
     }
 
     public void recupererCourrier() {
