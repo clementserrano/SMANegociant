@@ -52,6 +52,7 @@ public class Fournisseur extends Agent implements Runnable {
             performatif.setDeadLine(Utils.datePlusDays(10));
 
             message.setPerformatif(performatif);
+            System.out.println(message);
             batNegociants.poster(negociant, message);
         });
 
@@ -73,6 +74,7 @@ public class Fournisseur extends Agent implements Runnable {
                     performatif.setBillet(billet);
                     if (derniereOffre == billet.getPrix()) {
                         performatif.setAction(Action.VALIDER);
+                        System.out.println(reponse);
                         batFournisseurs.poster((Fournisseur) message.getAgentEmetteur(), reponse);
                         this.billet = null;
                     }
@@ -83,6 +85,7 @@ public class Fournisseur extends Agent implements Runnable {
                     derniereSoumission = calculerPrixRetour(billet.getPrix());
                     billet.setPrix(derniereSoumission);
                     performatif.setBillet(billet);
+                    System.out.println(reponse);
                     batFournisseurs.poster((Fournisseur) message.getAgentEmetteur(), reponse);
                     break;
                 case REFUSE:
