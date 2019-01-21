@@ -9,7 +9,7 @@ public class Negociant extends Agent implements Runnable {
     private BoiteAuxLettres<Negociant> batNegociants;
 
     private Lieu destinationSouhaitee;
-    private Integer budgetSouhaitee;
+    private Double budgetSouhaitee;
     private Date dateAchatAuPlusTard;
 
     private Double valeurDepart;
@@ -60,11 +60,15 @@ public class Negociant extends Agent implements Runnable {
                             || billet.getPrix() > budgetSouhaitee) {
                         performatif.setAction(Action.REFUSE);
                     } else {
-                        Double offre = calculerPrixRetour(billet.getPrix());
-                        if (billet.getPrix() == offre) {
+                        avantDerniereOffre = derniereOffre;
+                        derniereOffre = billet.getPrix();
+                        derniereSoumission = calculerPrixRetour(billet.getPrix());
+                        if (derniereSoumission < budgetSouhaitee) derniereSoumission = budgetSouhaitee;
+                        if (billet.getPrix() == derniereSoumission) {
                             performatif.setAction(Action.ACCEPT);
                         } else {
-                            billet.setPrix(offre);
+                            billet.setPrix(derniereSoumission);
+                            nbSoumission++;
                             performatif.setAction(Action.CONTRE_OFFRE);
                         }
                     }
@@ -117,11 +121,11 @@ public class Negociant extends Agent implements Runnable {
         this.destinationSouhaitee = destinationSouhaitee;
     }
 
-    public Integer getBudgetSouhaitee() {
+    public Double getBudgetSouhaitee() {
         return budgetSouhaitee;
     }
 
-    public void setBudgetSouhaitee(Integer budgetSouhaitee) {
+    public void setBudgetSouhaitee(Double budgetSouhaitee) {
         this.budgetSouhaitee = budgetSouhaitee;
     }
 

@@ -26,8 +26,9 @@ public class Fournisseur extends Agent implements Runnable {
 
     @Override
     public void run() {
-        while(billet != null){
-            proposeOffre();
+        proposeOffre();
+        while (billet != null) {
+            recupererCourrier();
         }
     }
 
@@ -56,6 +57,40 @@ public class Fournisseur extends Agent implements Runnable {
             return null;
         });
 
+    }
+
+    public void recupererCourrier() {
+        Message message = batFournisseurs.recuperer(this);
+
+        if (message != null) {
+            Message reponse = new Message();
+            reponse.setAgentEmetteur(this);
+            reponse.setAgentDestinataire(message.getAgentEmetteur());
+
+            Performatif performatif = new Performatif();
+            performatif.setDeadLine(Utils.datePlusDays(10));
+            Billet billet = message.getPerformatif().getBillet();
+
+            switch (message.getPerformatif().getAction()) {
+                case ACCEPT:
+                    performatif.setBillet(billet);
+                    if (derniereOffre == billet.getPrix()) {
+                        performatif.setAction(Action.VALIDER);
+                        batFournisseurs.poster((Fournisseur) message.getAgentEmetteur(), reponse);
+                    }
+                    break;
+                case CONTRE_OFFRE:
+                    avantDerniereOffre = derniereOffre;
+                    derniereOffre = billet.getPrix();
+                    derniereSoumission = calculerPrixRetour(billet.getPrix());
+                    billet.setPrix(derniereSoumission);
+                    performatif.setBillet(billet);
+                    batFournisseurs.poster((Fournisseur) message.getAgentEmetteur(), reponse);
+                    break;
+                case REFUSE:
+                    break;
+            }
+        }
     }
 
     public Double calculerPrixRetour(Double prixNegociation) {
