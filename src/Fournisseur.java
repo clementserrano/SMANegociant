@@ -18,7 +18,6 @@ public class Fournisseur extends Agent implements Runnable {
     private Double derniereOffre;
     private Double derniereSoumission;
 
-
     public Fournisseur() {
         negociants = new ArrayList<>();
         batNegociants = BoiteAuxLettres.getBatNegociant();
@@ -27,7 +26,9 @@ public class Fournisseur extends Agent implements Runnable {
 
     @Override
     public void run() {
-
+        while(billet != null){
+            proposeOffre();
+        }
     }
 
     public void proposeOffre() {
