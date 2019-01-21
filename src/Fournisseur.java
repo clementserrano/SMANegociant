@@ -12,8 +12,12 @@ public class Fournisseur extends Agent implements Runnable {
     private Billet billet;
     private Date dateVenteAuPlusTard;
     private Date dateVenteSouhaitee;
-    private Integer valeurDepart;
-    private Integer prixMin;
+    private Double valeurDepart;
+    private Double prixMin;
+    private Double avantDerniereOffre;
+    private Double derniereOffre;
+    private Double derniereSoumission;
+
 
     public Fournisseur() {
         negociants = new ArrayList<>();
@@ -51,6 +55,19 @@ public class Fournisseur extends Agent implements Runnable {
             return null;
         });
 
+    }
+
+    public Double calculerPrixRetour(Double prixNegociation) {
+        if (avantDerniereOffre == 0) {
+            return (valeurDepart - prixNegociation) * 0.9;
+        } else {
+            Double ecart = avantDerniereOffre - derniereOffre;
+            if (prixMin > derniereOffre - ecart) {
+                return derniereOffre - ecart;
+            } else {
+                return prixMin;
+            }
+        }
     }
 
     public List<Negociant> getNegociants() {
@@ -101,19 +118,19 @@ public class Fournisseur extends Agent implements Runnable {
         this.batFournisseurs = batFournisseurs;
     }
 
-    public Integer getValeurDepart() {
+    public Double getValeurDepart() {
         return valeurDepart;
     }
 
-    public void setValeurDepart(Integer valeurDepart) {
+    public void setValeurDepart(Double valeurDepart) {
         this.valeurDepart = valeurDepart;
     }
 
-    public Integer getPrixMin() {
+    public Double getPrixMin() {
         return prixMin;
     }
 
-    public void setPrixMin(Integer prixMin) {
+    public void setPrixMin(Double prixMin) {
         this.prixMin = prixMin;
     }
 }

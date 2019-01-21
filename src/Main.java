@@ -6,9 +6,9 @@ public class Main {
     public static void main(String[] args) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-        Negociant negociant = new Negociant();
+        Negociant negociant = new Negociant(100.0,5,30.0);
         negociant.setDestinationSouhaitee(Lieu.MARSEILLE);
-        negociant.setValeurDepart(50);
+        negociant.setValeurDepart(50.0);
         negociant.setBudgetSouhaitee(110);
         negociant.setDateAchatAuPlusTard(sdf.parse("20/01/2019"));
 

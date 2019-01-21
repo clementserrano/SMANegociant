@@ -5,7 +5,7 @@ public class Billet {
     private Lieu lieuArrivee;
     private Date dateDepart;
     private Date dateArrivee;
-    private Integer prix;
+    private Double prix;
 
     public Lieu getLieuDepart() {
         return lieuDepart;
@@ -39,11 +39,11 @@ public class Billet {
         this.dateArrivee = dateArrivee;
     }
 
-    public Integer getPrix() {
+    public Double getPrix() {
         return prix;
     }
 
-    public void setPrix(Integer prix) {
+    public void setPrix(Double prix) {
         this.prix = prix;
     }
 }
