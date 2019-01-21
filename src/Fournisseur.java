@@ -1,7 +1,10 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
-public class Fournisseur extends Agent {
+public class Fournisseur extends Agent implements Runnable {
 
     private List<Negociant> negociants;
     private BoiteAuxLettres<Negociant> batNegociants;
@@ -9,10 +12,18 @@ public class Fournisseur extends Agent {
     private Billet billet;
     private Date dateVenteAuPlusTard;
     private Date dateVenteSouhaitee;
+    private Integer valeurDepart;
+    private Integer prixMin;
 
     public Fournisseur() {
         negociants = new ArrayList<>();
         batNegociants = BoiteAuxLettres.getBatNegociant();
+        batFournisseurs = BoiteAuxLettres.getBatFournisseur();
+    }
+
+    @Override
+    public void run() {
+
     }
 
     public void proposeOffre() {
@@ -30,15 +41,9 @@ public class Fournisseur extends Agent {
 
             Performatif performatif = new Performatif();
             performatif.setAction(Action.CFP);
-            performatif.setBillet(this.billet);
-
-            Date deadline = new Date();
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(deadline);
-            calendar.add(Calendar.DATE, 10); // 10 jours
-            deadline = calendar.getTime();
-
-            performatif.setDeadLine(deadline);
+            billet.setPrix(valeurDepart);
+            performatif.setBillet(billet);
+            performatif.setDeadLine(Utils.datePlusDays(10));
 
             message.setPerformatif(performatif);
 
@@ -94,5 +99,21 @@ public class Fournisseur extends Agent {
 
     public void setBatFournisseurs(BoiteAuxLettres<Fournisseur> batFournisseurs) {
         this.batFournisseurs = batFournisseurs;
+    }
+
+    public Integer getValeurDepart() {
+        return valeurDepart;
+    }
+
+    public void setValeurDepart(Integer valeurDepart) {
+        this.valeurDepart = valeurDepart;
+    }
+
+    public Integer getPrixMin() {
+        return prixMin;
+    }
+
+    public void setPrixMin(Integer prixMin) {
+        this.prixMin = prixMin;
     }
 }
