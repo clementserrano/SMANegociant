@@ -22,6 +22,8 @@ public class Main {
         billet.setDateArrivee(sdf.parse("30/01/2019"));
 
         fournisseur.setBillet(billet);
-        fournisseur.proposeOffre();
+
+        new Thread(fournisseur).start();
+        new Thread(negociant).start();
     }
 }

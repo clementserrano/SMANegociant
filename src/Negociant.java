@@ -20,6 +20,8 @@ public class Negociant extends Agent implements Runnable {
     private Double derniereOffre;
     private Double derniereSoumission;
 
+    private Billet billetAchete;
+
     public Negociant(Double valeurDepart, Integer nbSoumissionMax, Double pourcentCroissance) {
         fournisseurs = new ArrayList<>();
         batFournisseurs = BoiteAuxLettres.getBatFournisseur();
@@ -53,15 +55,24 @@ public class Negociant extends Agent implements Runnable {
                 case CFP:
                     Billet billet = message.getPerformatif().getBillet();
                     if (!billet.getLieuArrivee().equals(destinationSouhaitee)
-                            || billet.getPrix() > budgetSouhaitee) { // REFUSER
+                            || billet.getPrix() > budgetSouhaitee) {
                         performatif.setAction(Action.REFUSE);
+                    } else {
+                        Double offre = calculerPrixRetour(billet.getPrix());
+                        if (billet.getPrix() == offre) {
+                            performatif.setAction(Action.ACCEPT);
+                        } else {
+                            billet.setPrix(offre);
+                            performatif.setAction(Action.CONTRE_OFFRE);
+                        }
                     }
 
-                    billet.setPrix(billet.getPrix() + 10);
-                        performatif.setAction(Action.ACCEPT);
                     performatif.setBillet(billet);
 
                     batFournisseurs.poster((Fournisseur) message.getAgentEmetteur(), reponse);
+                    break;
+                case VALIDER:
+                    billetAchete = message.getPerformatif().getBillet();
                     break;
             }
         }

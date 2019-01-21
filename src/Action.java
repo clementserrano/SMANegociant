@@ -1,8 +1,7 @@
 public enum Action {
     CFP,
-    ADJUGER,
+    VALIDER,
     ACCEPT,
     REFUSE,
-    CONTRE_OFFRE,
-    RENCHERIR
+    CONTRE_OFFRE
 }
