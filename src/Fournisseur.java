@@ -49,6 +49,7 @@ public class Fournisseur extends Agent implements Runnable {
             Performatif performatif = new Performatif();
             performatif.setAction(Action.CFP);
             billet.setPrix(valeurDepart);
+            derniereSoumission = valeurDepart;
             performatif.setBillet(billet);
             performatif.setDeadLine(Utils.datePlusDays(10));
 
@@ -81,7 +82,7 @@ public class Fournisseur extends Agent implements Runnable {
                     }
                     break;
                 case CONTRE_OFFRE:
-                    avantDerniereOffre = derniereOffre;
+                    avantDerniereOffre = derniereOffre.doubleValue();
                     derniereOffre = billet.getPrix();
                     derniereSoumission = calculerPrixRetour(billet.getPrix());
                     billet.setPrix(derniereSoumission);
@@ -101,9 +102,9 @@ public class Fournisseur extends Agent implements Runnable {
         if (avantDerniereOffre == 0) {
             return (valeurDepart - prixRecu) * 0.9;
         } else {
-            Double ecart = avantDerniereOffre - derniereOffre;
-            if (prixMin > derniereOffre - ecart) {
-                return derniereOffre - ecart;
+            Double ecart = derniereOffre - avantDerniereOffre;
+            if (prixMin < derniereSoumission - ecart) {
+                return derniereSoumission - ecart;
             } else {
                 return prixMin;
             }

@@ -65,7 +65,8 @@ public class Negociant extends Agent implements Runnable {
                         derniereOffre = billet.getPrix();
                         derniereSoumission = calculerPrixRetour(billet.getPrix());
                         if (derniereSoumission < budgetSouhaiteeMin) derniereSoumission = budgetSouhaiteeMin;
-                        if (billet.getPrix() == derniereSoumission) {
+                        if (billet.getPrix() <= derniereSoumission) {
+                            derniereSoumission = billet.getPrix();
                             performatif.setAction(Action.ACCEPT);
                         } else {
                             billet.setPrix(derniereSoumission);
@@ -89,9 +90,10 @@ public class Negociant extends Agent implements Runnable {
         if (avantDerniereOffre == 0) {
             return valeurDepart;
         } else {
+            if (prixRecu < derniereSoumission) return derniereSoumission;
             Double ecart = avantDerniereOffre - derniereOffre;
-            if (ecart > pourcentCroissance) {
-                return prixRecu + derniereOffre * pourcentCroissance;
+            if (ecart > derniereSoumission * pourcentCroissance) {
+                return derniereSoumission + derniereSoumission * pourcentCroissance;
             } else {
                 return derniereSoumission + ecart;
             }

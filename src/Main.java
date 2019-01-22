@@ -6,7 +6,7 @@ public class Main {
     public static void main(String[] args) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-        Negociant negociant = new Negociant(100.0, 5, 30.0);
+        Negociant negociant = new Negociant(100.0, 5, 0.30);
         negociant.setDestinationSouhaitee(Lieu.MARSEILLE);
         negociant.setValeurDepart(50.0);
         negociant.setBudgetSouhaiteeMin(110.0);
