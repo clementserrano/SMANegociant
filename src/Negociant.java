@@ -73,7 +73,6 @@ public class Negociant extends Agent implements Runnable {
                     }
                     performatif.setBillet(billet);
                     reponse.setPerformatif(performatif);
-                    System.out.println(reponse);
                     batFournisseurs.poster(message.getAgentEmetteur(), reponse);
                     break;
                 case VALIDER:
