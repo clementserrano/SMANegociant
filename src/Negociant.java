@@ -31,7 +31,6 @@ public class Negociant extends Agent implements Runnable {
         derniereOffre = 0.0;
         avantDerniereOffre = 0.0;
         derniereSoumission = 0.0;
-        this.valeurDepart = valeurDepart;
         batNegociants = BoiteAuxLettres.getBatNegociant();
     }
 
