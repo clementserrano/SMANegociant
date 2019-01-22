@@ -13,7 +13,6 @@ public class Negociant extends Agent implements Runnable {
     private Double budgetSouhaiteeMin;
     private Date dateAchatAuPlusTard;
 
-    private Double valeurDepart;
     private Integer nbSoumission;
     private Integer nbSoumissionMax;
     private Double pourcentCroissance;
@@ -32,7 +31,6 @@ public class Negociant extends Agent implements Runnable {
         derniereOffre = 0.0;
         avantDerniereOffre = 0.0;
         derniereSoumission = 0.0;
-        this.valeurDepart = valeurDepart;
         batNegociants = BoiteAuxLettres.getBatNegociant();
     }
 
@@ -76,7 +74,6 @@ public class Negociant extends Agent implements Runnable {
                     }
                     performatif.setBillet(billet);
                     reponse.setPerformatif(performatif);
-                    System.out.println(reponse);
                     batFournisseurs.poster(message.getAgentEmetteur(), reponse);
                     break;
                 case VALIDER:
@@ -88,7 +85,7 @@ public class Negociant extends Agent implements Runnable {
 
     public Double calculerPrixRetour(Double prixRecu) {
         if (avantDerniereOffre == 0) {
-            return valeurDepart;
+            return budgetSouhaiteeMin;
         } else {
             if (prixRecu < derniereSoumission) return derniereSoumission;
             Double ecart = avantDerniereOffre - derniereOffre;
@@ -146,14 +143,6 @@ public class Negociant extends Agent implements Runnable {
 
     public void setDateAchatAuPlusTard(Date dateAchatAuPlusTard) {
         this.dateAchatAuPlusTard = dateAchatAuPlusTard;
-    }
-
-    public Double getValeurDepart() {
-        return valeurDepart;
-    }
-
-    public void setValeurDepart(Double valeurDepart) {
-        this.valeurDepart = valeurDepart;
     }
 
     public BoiteAuxLettres getBatNegociants() {
