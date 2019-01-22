@@ -8,6 +8,7 @@ public class Negociant extends Agent implements Runnable {
     private BoiteAuxLettres batFournisseurs;
     private BoiteAuxLettres batNegociants;
 
+    private Lieu departSouhaite;
     private Lieu destinationSouhaitee;
     private Double budgetSouhaiteeMax;
     private Double budgetSouhaiteeMin;
@@ -22,15 +23,10 @@ public class Negociant extends Agent implements Runnable {
 
     private Billet billetAchete;
 
-    public Negociant(Double valeurDepart, Integer nbSoumissionMax, Double pourcentCroissance) {
+    public Negociant() {
         fournisseurs = new ArrayList<>();
-        batFournisseurs = BoiteAuxLettres.getBatFournisseur();
         nbSoumission = 0;
-        this.nbSoumissionMax = nbSoumissionMax;
-        this.pourcentCroissance = pourcentCroissance;
-        derniereOffre = 0.0;
-        avantDerniereOffre = 0.0;
-        derniereSoumission = 0.0;
+        batFournisseurs = BoiteAuxLettres.getBatFournisseur();
         batNegociants = BoiteAuxLettres.getBatNegociant();
     }
 
@@ -56,7 +52,8 @@ public class Negociant extends Agent implements Runnable {
                 case CFP:
                     Billet billet = message.getPerformatif().getBillet();
                     if (!billet.getLieuArrivee().equals(destinationSouhaitee)
-                            || billet.getPrix() > budgetSouhaiteeMax) {
+                            || billet.getPrix() > budgetSouhaiteeMax
+                            || nbSoumission > nbSoumissionMax) {
                         performatif.setAction(Action.REFUSE);
                     } else {
                         avantDerniereOffre = derniereOffre;
@@ -83,7 +80,7 @@ public class Negociant extends Agent implements Runnable {
     }
 
     public Double calculerPrixRetour(Double prixRecu) {
-        if (avantDerniereOffre == 0) {
+        if (avantDerniereOffre == null) {
             return budgetSouhaiteeMin;
         } else {
             Double ecart = avantDerniereOffre - derniereOffre;
@@ -93,6 +90,38 @@ public class Negociant extends Agent implements Runnable {
                 return derniereSoumission + ecart;
             }
         }
+    }
+
+    public Lieu getDestinationSouhaitee() {
+        return destinationSouhaitee;
+    }
+
+    public void setDestinationSouhaitee(Lieu destinationSouhaitee) {
+        this.destinationSouhaitee = destinationSouhaitee;
+    }
+
+    public void setBudgetSouhaiteeMin(Double budgetSouhaitee) {
+        this.budgetSouhaiteeMin = budgetSouhaitee;
+    }
+
+    public void setBudgetSouhaiteeMax(Double budgetSouhaitee) {
+        this.budgetSouhaiteeMax = budgetSouhaitee;
+    }
+
+    public Date getDateAchatAuPlusTard() {
+        return dateAchatAuPlusTard;
+    }
+
+    public void setDateAchatAuPlusTard(Date dateAchatAuPlusTard) {
+        this.dateAchatAuPlusTard = dateAchatAuPlusTard;
+    }
+
+    public void setNbSoumissionMax(Integer nbSoumissionMax) {
+        this.nbSoumissionMax = nbSoumissionMax;
+    }
+
+    public void setPourcentCroissance(Double pourcentCroissance) {
+        this.pourcentCroissance = pourcentCroissance;
     }
 
     public List<Fournisseur> getFournisseurs() {
@@ -111,43 +140,75 @@ public class Negociant extends Agent implements Runnable {
         this.batFournisseurs = batFournisseurs;
     }
 
-    public Lieu getDestinationSouhaitee() {
-        return destinationSouhaitee;
-    }
-
-    public void setDestinationSouhaitee(Lieu destinationSouhaitee) {
-        this.destinationSouhaitee = destinationSouhaitee;
-    }
-
-    public Double getBudgetSouhaiteeMin() {
-        return budgetSouhaiteeMin;
-    }
-
-    public void setBudgetSouhaiteeMin(Double budgetSouhaitee) {
-        this.budgetSouhaiteeMin = budgetSouhaitee;
-    }
-
-    public Double getBudgetSouhaiteeMax() {
-        return budgetSouhaiteeMax;
-    }
-
-    public void setBudgetSouhaiteeMax(Double budgetSouhaitee) {
-        this.budgetSouhaiteeMax = budgetSouhaitee;
-    }
-
-    public Date getDateAchatAuPlusTard() {
-        return dateAchatAuPlusTard;
-    }
-
-    public void setDateAchatAuPlusTard(Date dateAchatAuPlusTard) {
-        this.dateAchatAuPlusTard = dateAchatAuPlusTard;
-    }
-
     public BoiteAuxLettres getBatNegociants() {
         return batNegociants;
     }
 
     public void setBatNegociants(BoiteAuxLettres batNegociants) {
         this.batNegociants = batNegociants;
+    }
+
+    public Double getBudgetSouhaiteeMax() {
+        return budgetSouhaiteeMax;
+    }
+
+    public Double getBudgetSouhaiteeMin() {
+        return budgetSouhaiteeMin;
+    }
+
+    public Integer getNbSoumission() {
+        return nbSoumission;
+    }
+
+    public void setNbSoumission(Integer nbSoumission) {
+        this.nbSoumission = nbSoumission;
+    }
+
+    public Integer getNbSoumissionMax() {
+        return nbSoumissionMax;
+    }
+
+    public Double getPourcentCroissance() {
+        return pourcentCroissance;
+    }
+
+    public Double getAvantDerniereOffre() {
+        return avantDerniereOffre;
+    }
+
+    public void setAvantDerniereOffre(Double avantDerniereOffre) {
+        this.avantDerniereOffre = avantDerniereOffre;
+    }
+
+    public Double getDerniereOffre() {
+        return derniereOffre;
+    }
+
+    public void setDerniereOffre(Double derniereOffre) {
+        this.derniereOffre = derniereOffre;
+    }
+
+    public Double getDerniereSoumission() {
+        return derniereSoumission;
+    }
+
+    public void setDerniereSoumission(Double derniereSoumission) {
+        this.derniereSoumission = derniereSoumission;
+    }
+
+    public Billet getBilletAchete() {
+        return billetAchete;
+    }
+
+    public void setBilletAchete(Billet billetAchete) {
+        this.billetAchete = billetAchete;
+    }
+
+    public Lieu getDepartSouhaite() {
+        return departSouhaite;
+    }
+
+    public void setDepartSouhaite(Lieu departSouhaite) {
+        this.departSouhaite = departSouhaite;
     }
 }

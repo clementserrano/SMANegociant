@@ -7,7 +7,7 @@ public class Utils {
         Date deadline = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(deadline);
-        calendar.add(Calendar.DATE, days); // 10 jours
+        calendar.add(Calendar.DATE, days);
         return calendar.getTime();
     }
 }

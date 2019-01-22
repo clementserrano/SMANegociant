@@ -21,9 +21,6 @@ public class Fournisseur extends Agent implements Runnable {
         negociants = new ArrayList<>();
         batNegociants = BoiteAuxLettres.getBatNegociant();
         batFournisseurs = BoiteAuxLettres.getBatFournisseur();
-        avantDerniereOffre = 0.0;
-        derniereOffre = 0.0;
-        derniereSoumission = 0.0;
     }
 
     @Override
@@ -38,6 +35,7 @@ public class Fournisseur extends Agent implements Runnable {
         List<Negociant> negociantsInterresses = negociants.stream()
                 .filter(negociant ->
                         negociant.getDestinationSouhaitee().equals(billet.getLieuArrivee())
+                                && negociant.getDepartSouhaite().equals(billet.getLieuDepart())
                                 && negociant.getDateAchatAuPlusTard().before(dateVenteAuPlusTard))
                 .collect(Collectors.toList());
 
@@ -95,7 +93,7 @@ public class Fournisseur extends Agent implements Runnable {
     }
 
     public Double calculerPrixRetour(Double prixRecu) {
-        if (avantDerniereOffre == 0) {
+        if (avantDerniereOffre == null) {
             return (valeurDepart - prixRecu) * 0.9;
         } else {
             Double ecart = avantDerniereOffre - derniereOffre;
@@ -111,6 +109,22 @@ public class Fournisseur extends Agent implements Runnable {
         return negociants;
     }
 
+    public void setBillet(Billet billet) {
+        this.billet = billet;
+    }
+
+    public void setDateVenteAuPlusTard(Date dateVenteAuPlusTard) {
+        this.dateVenteAuPlusTard = dateVenteAuPlusTard;
+    }
+
+    public void setValeurDepart(Double valeurDepart) {
+        this.valeurDepart = valeurDepart;
+    }
+
+    public void setPrixMin(Double prixMin) {
+        this.prixMin = prixMin;
+    }
+
     public void setNegociants(List<Negociant> negociants) {
         this.negociants = negociants;
     }
@@ -123,20 +137,20 @@ public class Fournisseur extends Agent implements Runnable {
         this.batNegociants = batNegociants;
     }
 
+    public BoiteAuxLettres getBatFournisseurs() {
+        return batFournisseurs;
+    }
+
+    public void setBatFournisseurs(BoiteAuxLettres batFournisseurs) {
+        this.batFournisseurs = batFournisseurs;
+    }
+
     public Billet getBillet() {
         return billet;
     }
 
-    public void setBillet(Billet billet) {
-        this.billet = billet;
-    }
-
     public Date getDateVenteAuPlusTard() {
         return dateVenteAuPlusTard;
-    }
-
-    public void setDateVenteAuPlusTard(Date dateVenteAuPlusTard) {
-        this.dateVenteAuPlusTard = dateVenteAuPlusTard;
     }
 
     public Date getDateVenteSouhaitee() {
@@ -147,27 +161,35 @@ public class Fournisseur extends Agent implements Runnable {
         this.dateVenteSouhaitee = dateVenteSouhaitee;
     }
 
-    public BoiteAuxLettres getBatFournisseurs() {
-        return batFournisseurs;
-    }
-
-    public void setBatFournisseurs(BoiteAuxLettres batFournisseurs) {
-        this.batFournisseurs = batFournisseurs;
-    }
-
     public Double getValeurDepart() {
         return valeurDepart;
-    }
-
-    public void setValeurDepart(Double valeurDepart) {
-        this.valeurDepart = valeurDepart;
     }
 
     public Double getPrixMin() {
         return prixMin;
     }
 
-    public void setPrixMin(Double prixMin) {
-        this.prixMin = prixMin;
+    public Double getAvantDerniereOffre() {
+        return avantDerniereOffre;
+    }
+
+    public void setAvantDerniereOffre(Double avantDerniereOffre) {
+        this.avantDerniereOffre = avantDerniereOffre;
+    }
+
+    public Double getDerniereOffre() {
+        return derniereOffre;
+    }
+
+    public void setDerniereOffre(Double derniereOffre) {
+        this.derniereOffre = derniereOffre;
+    }
+
+    public Double getDerniereSoumission() {
+        return derniereSoumission;
+    }
+
+    public void setDerniereSoumission(Double derniereSoumission) {
+        this.derniereSoumission = derniereSoumission;
     }
 }

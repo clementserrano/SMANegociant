@@ -27,14 +27,6 @@ public class BoiteAuxLettres {
         return courrier;
     }
 
-    public Map<Agent, List<Message>> getMapMessages() {
-        return mapMessages;
-    }
-
-    public void setMapMessages(Map<Agent, List<Message>> mapMessages) {
-        this.mapMessages = mapMessages;
-    }
-
     public static BoiteAuxLettres getBatFournisseur() {
         return batFournisseur;
     }
