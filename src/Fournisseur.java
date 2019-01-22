@@ -78,7 +78,7 @@ public class Fournisseur extends Agent implements Runnable {
                     }
                     break;
                 case CONTRE_OFFRE:
-                    avantDerniereOffre = derniereOffre.doubleValue();
+                    avantDerniereOffre = derniereOffre;
                     derniereOffre = billet.getPrix();
                     derniereSoumission = calculerPrixRetour(billet.getPrix());
                     billet.setPrix(derniereSoumission);
