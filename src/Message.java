@@ -29,12 +29,11 @@ public class Message {
 
     @Override
     public String toString() {
-        return "Message{" +
-                agentEmetteur + "," + agentDestinataire
-                + ",{" + performatif.getBillet().getLieuDepart()
-                + "," + performatif.getBillet().getLieuArrivee()
-                + "," + performatif.getAction()
-                + "," + performatif.getBillet().getPrix() + "}" +
-                '}';
+        return "" +
+                agentEmetteur + " à " + agentDestinataire
+                + ", " + performatif.getBillet().getLieuDepart()
+                + " à " + performatif.getBillet().getLieuArrivee()
+                + ", " + performatif.getAction()
+                + ", " + performatif.getBillet().getPrix();
     }
 }
