@@ -1,5 +1,5 @@
 public enum Action {
-    CFP,
+    OFFRE,
     VALIDER,
     ACCEPT,
     REFUSE,

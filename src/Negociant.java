@@ -49,7 +49,7 @@ public class Negociant extends Agent implements Runnable {
             performatif.setDeadLine(Utils.datePlusDays(10));
 
             switch (message.getPerformatif().getAction()) {
-                case CFP:
+                case OFFRE:
                     Billet billet = message.getPerformatif().getBillet();
                     if (!billet.getLieuArrivee().equals(destinationSouhaitee)
                             || billet.getPrix() > budgetSouhaiteeMax
@@ -75,6 +75,12 @@ public class Negociant extends Agent implements Runnable {
                     break;
                 case VALIDER:
                     billetAchete = message.getPerformatif().getBillet();
+                    break;
+                case REFUSE:
+                    nbSoumission = 0;
+                    avantDerniereOffre = null;
+                    derniereOffre = null;
+                    derniereSoumission = null;
                     break;
             }
         }

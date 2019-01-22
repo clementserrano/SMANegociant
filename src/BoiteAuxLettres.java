@@ -14,7 +14,7 @@ public class BoiteAuxLettres {
         mapMessages = new HashMap<>();
     }
 
-    public void poster(Agent destinataire, Message message) {
+    public synchronized void poster(Agent destinataire, Message message) {
         if (mapMessages.get(destinataire) == null) mapMessages.put(destinataire, new ArrayList<>());
         mapMessages.get(destinataire).add(message);
         System.out.println(message);
