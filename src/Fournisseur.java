@@ -16,6 +16,8 @@ public class Fournisseur extends Agent implements Runnable {
     private Map<Agent, Double> derniereOffre;
     private Map<Agent, Double> derniereSoumission;
 
+    List<Negociant> negociantList;
+
     public Fournisseur() {
         negociants = new ArrayList<>();
         batNegociants = BoiteAuxLettres.getBatNegociant();
@@ -23,6 +25,7 @@ public class Fournisseur extends Agent implements Runnable {
         avantDerniereOffre = new HashMap<>();
         derniereOffre = new HashMap<>();
         derniereSoumission = new HashMap<>();
+        negociantList = new ArrayList<>();
     }
 
     @Override
@@ -30,7 +33,13 @@ public class Fournisseur extends Agent implements Runnable {
         proposeOffre();
         while (billet != null) {
             recupererCourrier();
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+
     }
 
     public void proposeOffre() {
@@ -41,6 +50,7 @@ public class Fournisseur extends Agent implements Runnable {
                                 && negociant.getDateAchatAuPlusTard().before(dateVenteAuPlusTard))
                 .collect(Collectors.toList());
 
+        negociantList = negociantsInterresses;
         negociantsInterresses.stream().forEach(negociant -> {
             Message message = new Message();
             message.setAgentDestinataire(negociant);
@@ -78,9 +88,9 @@ public class Fournisseur extends Agent implements Runnable {
                     if (derniereSoumission.get(negociant) == billet.getPrix()) {
                         performatif.setAction(Action.VALIDER);
                         reponse.setPerformatif(performatif);
-                        batNegociants.poster(message.getAgentEmetteur(), reponse);
+                        batNegociants.poster(negociant, reponse);
                         this.billet = null;
-                        derniereOffre.keySet().stream().filter(n -> !n.equals(negociant)).forEach(n -> {
+                        negociantList.stream().filter(n -> !n.equals(negociant)).forEach(n -> {
                             Message refus = new Message();
                             refus.setAgentEmetteur(this);
                             refus.setAgentDestinataire(n);
