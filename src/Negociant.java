@@ -13,7 +13,6 @@ public class Negociant extends Agent implements Runnable {
     private Double budgetSouhaiteeMin;
     private Date dateAchatAuPlusTard;
 
-    private Double valeurDepart;
     private Integer nbSoumission;
     private Integer nbSoumissionMax;
     private Double pourcentCroissance;
@@ -87,7 +86,7 @@ public class Negociant extends Agent implements Runnable {
 
     public Double calculerPrixRetour(Double prixRecu) {
         if (avantDerniereOffre == 0) {
-            return valeurDepart;
+            return budgetSouhaiteeMin;
         } else {
             Double ecart = avantDerniereOffre - derniereOffre;
             if (ecart > pourcentCroissance) {
@@ -144,14 +143,6 @@ public class Negociant extends Agent implements Runnable {
 
     public void setDateAchatAuPlusTard(Date dateAchatAuPlusTard) {
         this.dateAchatAuPlusTard = dateAchatAuPlusTard;
-    }
-
-    public Double getValeurDepart() {
-        return valeurDepart;
-    }
-
-    public void setValeurDepart(Double valeurDepart) {
-        this.valeurDepart = valeurDepart;
     }
 
     public BoiteAuxLettres getBatNegociants() {
