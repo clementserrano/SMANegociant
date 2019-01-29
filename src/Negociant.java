@@ -34,6 +34,11 @@ public class Negociant extends Agent implements Runnable {
     public void run() {
         while (billetAchete == null) {
             recupererCourrier();
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         System.out.println("Négociant terminé");
     }
