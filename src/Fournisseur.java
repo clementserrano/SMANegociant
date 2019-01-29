@@ -15,6 +15,9 @@ public class Fournisseur extends Agent implements Runnable {
     private Map<Agent, Double> avantDerniereOffre;
     private Map<Agent, Double> derniereOffre;
     private Map<Agent, Double> derniereSoumission;
+    private Map<Agent, Double> propositionFinale;
+
+    private Long startCountdown;
 
     public Fournisseur() {
         negociants = new ArrayList<>();
@@ -23,6 +26,7 @@ public class Fournisseur extends Agent implements Runnable {
         avantDerniereOffre = new HashMap<>();
         derniereOffre = new HashMap<>();
         derniereSoumission = new HashMap<>();
+        propositionFinale = new HashMap<>();
     }
 
     @Override
@@ -30,7 +34,12 @@ public class Fournisseur extends Agent implements Runnable {
         proposeOffre();
         while (billet != null) {
             recupererCourrier();
+            if (propositionFinale.size() > 0) {
+                decisionFinale();
+            }
+
         }
+        System.out.println("Fournisseur terminé");
     }
 
     public void proposeOffre() {
@@ -68,15 +77,16 @@ public class Fournisseur extends Agent implements Runnable {
 
             Performatif performatif = new Performatif();
             performatif.setDeadLine(Utils.datePlusDays(10));
-            Billet billet = message.getPerformatif().getBillet();
+            billet = message.getPerformatif().getBillet();
 
             Agent negociant = message.getAgentEmetteur();
 
             switch (message.getPerformatif().getAction()) {
                 case ACCEPT:
-                    performatif.setBillet(billet);
+                    //performatif.setBillet(billet);
                     if (derniereSoumission.get(negociant) == billet.getPrix()) {
-                        performatif.setAction(Action.VALIDER);
+                        propositionFinale.put(negociant, billet.getPrix());
+                        /*performatif.setAction(Action.VALIDER);
                         reponse.setPerformatif(performatif);
                         batNegociants.poster(message.getAgentEmetteur(), reponse);
                         this.billet = null;
@@ -90,7 +100,7 @@ public class Fournisseur extends Agent implements Runnable {
                             p.setBillet(billet);
                             refus.setPerformatif(p);
                             batNegociants.poster(n, refus);
-                        });
+                        });*/
                     }
                     break;
                 case CONTRE_OFFRE:
@@ -119,6 +129,43 @@ public class Fournisseur extends Agent implements Runnable {
             } else {
                 return prixMin;
             }
+        }
+    }
+
+    public void decisionFinale() {
+        if (startCountdown == null) {
+            startCountdown = System.currentTimeMillis();
+        }
+        if (System.currentTimeMillis() - startCountdown > 2000) {
+            // Choix
+            Map<Agent,Double> pTrie = propositionFinale.entrySet().stream().sorted(Map.Entry.comparingByValue()).
+            Negociant meilleur = pTrie.get(pTrie.size() - 1);
+
+            Message valid = new Message();
+            valid.setAgentEmetteur(this);
+            valid.setAgentDestinataire(propositionFinale.get());
+
+            Performatif performatif = new Performatif();
+            performatif.setDeadLine(Utils.datePlusDays(10));
+            billet = message.getPerformatif().getBillet();
+
+            Agent negociant = message.getAgentEmetteur();
+            performatif.setBillet(billet);
+            performatif.setAction(Action.VALIDER);
+            reponse.setPerformatif(performatif);
+            batNegociants.poster(message.getAgentEmetteur(), reponse);
+            this.billet = null;
+            derniereOffre.keySet().stream().filter(n -> !n.equals(negociant)).forEach(n -> {
+                Message refus = new Message();
+                refus.setAgentEmetteur(this);
+                refus.setAgentDestinataire(n);
+                Performatif p = new Performatif();
+                p.setAction(Action.REFUSE);
+                p.setDeadLine(Utils.datePlusDays(10));
+                p.setBillet(billet);
+                refus.setPerformatif(p);
+                batNegociants.poster(n, refus);
+            });
         }
     }
 
