@@ -25,6 +25,7 @@ public class Negociant extends Agent implements Runnable {
     private Billet billetAchete;
 
     public Negociant() {
+        this.type = "negociant";
         fournisseurs = new ArrayList<>();
         nbSoumission = new HashMap<>();
         avantDerniereOffre = new HashMap<>();
