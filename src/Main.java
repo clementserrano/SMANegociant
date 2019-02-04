@@ -9,6 +9,7 @@ public class Main {
         negociant.setBudgetSouhaiteeMin(110.0);
         negociant.setBudgetSouhaiteeMax(500.0);
         negociant.setDateAchatAuPlusTard(Utils.datePlusDays(5)); // dans 5 jours
+        negociant.setName("Négociant 1");
 
         Negociant negociant2 = new Negociant();
         negociant2.setNbSoumissionMax(6);
@@ -18,6 +19,7 @@ public class Main {
         negociant2.setBudgetSouhaiteeMin(150.0);
         negociant2.setBudgetSouhaiteeMax(600.0);
         negociant2.setDateAchatAuPlusTard(Utils.datePlusDays(6));
+        negociant.setName("Négociant 2");
 
         Fournisseur fournisseur = new Fournisseur();
 
@@ -35,6 +37,7 @@ public class Main {
 
         fournisseur.getNegociants().add(negociant);
         fournisseur.getNegociants().add(negociant2);
+        fournisseur.setName("Fournisseur 1");
 
         negociant.getFournisseurs().add(fournisseur);
 
