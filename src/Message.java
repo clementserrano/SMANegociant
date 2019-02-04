@@ -30,7 +30,7 @@ public class Message {
     @Override
     public String toString() {
         return "" +
-                agentEmetteur + " à " + agentDestinataire
+                agentEmetteur.getName() + " à " + agentDestinataire.getName()
                 + ", " + performatif.getBillet().getLieuDepart()
                 + " à " + performatif.getBillet().getLieuArrivee()
                 + ", " + performatif.getAction()
