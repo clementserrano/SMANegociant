@@ -47,7 +47,7 @@ public class Fournisseur extends Agent implements Runnable {
                 e.printStackTrace();
             }
         }
-        System.out.println("Fournisseur terminé");
+        System.out.println(getName() + " terminé");
     }
 
     public void proposeOffre() {
@@ -80,7 +80,7 @@ public class Fournisseur extends Agent implements Runnable {
     public void recupererCourrier() {
         Message message = batFournisseurs.recuperer(this);
         if (message != null) {
-            billet = message.getPerformatif().getBillet();
+            Billet billet = message.getPerformatif().getBillet();
             Agent negociant = message.getAgentEmetteur();
 
             switch (message.getPerformatif().getAction()) {
@@ -103,7 +103,7 @@ public class Fournisseur extends Agent implements Runnable {
                     performatif.setBillet(billet);
                     performatif.setAction(Action.OFFRE);
                     reponse.setPerformatif(performatif);
-                    batNegociants.poster(message.getAgentEmetteur(), reponse);
+                    batNegociants.poster(negociant, reponse);
                     break;
                 case REFUSE:
                     break;
