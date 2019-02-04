@@ -19,6 +19,12 @@ public class GUI extends Application {
 
     private List<Fournisseur> fournisseurs;
     private List<Negociant> negociants;
+
+    // index:
+    //      - 2: Premier échange 1 Négociant, 1 Fournisseur
+    //      - 3: Deuxieme échange 2 Négociants, 1 Fournisseur
+    //      - 5: Troisieme échange 2 Négociants, 2 Fournisseurs
+    //      - 7: Troisieme échange 3 Négociants, 3 Fournisseurs
     private final static int INDEX = 7;
 
     @Override
