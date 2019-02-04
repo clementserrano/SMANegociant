@@ -47,15 +47,15 @@ public class Negociant extends Agent implements Runnable {
         Message message = batNegociants.recuperer(this);
 
         if (message != null) {
-            Message reponse = new Message();
-            reponse.setAgentEmetteur(this);
-            reponse.setAgentDestinataire(message.getAgentEmetteur());
-
-            Performatif performatif = new Performatif();
-            performatif.setDeadLine(Utils.datePlusDays(10));
-
             switch (message.getPerformatif().getAction()) {
                 case OFFRE:
+                    Message reponse = new Message();
+                    reponse.setAgentEmetteur(this);
+                    reponse.setAgentDestinataire(message.getAgentEmetteur());
+
+                    Performatif performatif = new Performatif();
+                    performatif.setDeadLine(Utils.datePlusDays(10));
+
                     Billet billet = message.getPerformatif().getBillet();
                     if (!billet.getLieuArrivee().equals(destinationSouhaitee)
                             || billet.getPrix() > budgetSouhaiteeMax

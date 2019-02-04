@@ -80,39 +80,22 @@ public class Fournisseur extends Agent implements Runnable {
     public void recupererCourrier() {
         Message message = batFournisseurs.recuperer(this);
         if (message != null) {
-            Message reponse = new Message();
-            reponse.setAgentEmetteur(this);
-            reponse.setAgentDestinataire(message.getAgentEmetteur());
-
-            Performatif performatif = new Performatif();
-            performatif.setDeadLine(Utils.datePlusDays(10));
             billet = message.getPerformatif().getBillet();
-
             Agent negociant = message.getAgentEmetteur();
 
             switch (message.getPerformatif().getAction()) {
                 case ACCEPT:
-                    //performatif.setBillet(billet);
                     if (derniereSoumission.get(negociant) == billet.getPrix()) {
                         propositionFinale.put(negociant, billet.getPrix());
-                        /*performatif.setAction(Action.VALIDER);
-                        reponse.setPerformatif(performatif);
-                        batNegociants.poster(negociant, reponse);
-                        this.billet = null;
-                        negociantList.stream().filter(n -> !n.equals(negociant)).forEach(n -> {
-                            Message refus = new Message();
-                            refus.setAgentEmetteur(this);
-                            refus.setAgentDestinataire(n);
-                            Performatif p = new Performatif();
-                            p.setAction(Action.REFUSE);
-                            p.setDeadLine(Utils.datePlusDays(10));
-                            p.setBillet(billet);
-                            refus.setPerformatif(p);
-                            batNegociants.poster(n, refus);
-                        });*/
                     }
                     break;
                 case CONTRE_OFFRE:
+                    Message reponse = new Message();
+                    reponse.setAgentEmetteur(this);
+                    reponse.setAgentDestinataire(message.getAgentEmetteur());
+
+                    Performatif performatif = new Performatif();
+                    performatif.setDeadLine(Utils.datePlusDays(10));
                     avantDerniereOffre.put(negociant, derniereOffre.get(negociant));
                     derniereOffre.put(negociant, billet.getPrix());
                     derniereSoumission.put(negociant, calculerPrixRetour(negociant, billet.getPrix()));
@@ -147,24 +130,22 @@ public class Fournisseur extends Agent implements Runnable {
         }
         if (System.currentTimeMillis() - startCountdown > 2000) {
             // Choix
-            Map<Agent,Double> pTrie = propositionFinale.entrySet().stream().sorted(Map.Entry.comparingByValue()).
-            Negociant meilleur = pTrie.get(pTrie.size() - 1);
+            Agent meilleur = propositionFinale.entrySet().stream()
+                    .max(Map.Entry.comparingByValue()).get().getKey();
 
             Message valid = new Message();
             valid.setAgentEmetteur(this);
-            valid.setAgentDestinataire(propositionFinale.get());
+            valid.setAgentDestinataire(meilleur);
 
             Performatif performatif = new Performatif();
             performatif.setDeadLine(Utils.datePlusDays(10));
-            billet = message.getPerformatif().getBillet();
-
-            Agent negociant = message.getAgentEmetteur();
             performatif.setBillet(billet);
             performatif.setAction(Action.VALIDER);
-            reponse.setPerformatif(performatif);
-            batNegociants.poster(message.getAgentEmetteur(), reponse);
+            valid.setPerformatif(performatif);
+            batNegociants.poster(valid.getAgentDestinataire(), valid);
+
             this.billet = null;
-            derniereOffre.keySet().stream().filter(n -> !n.equals(negociant)).forEach(n -> {
+            derniereOffre.keySet().stream().filter(n -> !n.equals(meilleur)).forEach(n -> {
                 Message refus = new Message();
                 refus.setAgentEmetteur(this);
                 refus.setAgentDestinataire(n);
