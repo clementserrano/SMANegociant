@@ -19,7 +19,7 @@ public class Main {
         negociant2.setBudgetSouhaiteeMin(150.0);
         negociant2.setBudgetSouhaiteeMax(600.0);
         negociant2.setDateAchatAuPlusTard(Utils.datePlusDays(6));
-        negociant.setName("Négociant 2");
+        negociant2.setName("Négociant 2");
 
         Fournisseur fournisseur = new Fournisseur();
 
