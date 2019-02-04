@@ -10,7 +10,7 @@ public class Main {
         //      - 5: Troisieme échange 2 Négociants, 2 Fournisseur
         //      - 7: Troisieme échange 3 Négociants, 3 Fournisseur
 
-        int index = 7;
+        int index = 3;
 
         ArrayList<Fournisseur> listFournisseurs = new ArrayList<>();
         ArrayList<Negociant> listNegociants= new ArrayList<>();
@@ -225,7 +225,7 @@ public class Main {
             Fournisseur fournisseur_4_3 = new Fournisseur();
             fournisseur_4_3.setValeurDepart(400.0);
             fournisseur_4_3.setPrixMin(100.0);
-            fournisseur_4_3.setBillet(billet_4_2);
+            fournisseur_4_3.setBillet(billet_4_3);
             fournisseur_4_3.setDateVenteAuPlusTard(Utils.datePlusDays(9));
             fournisseur_4_3.setName("Fournisseur 3");
 

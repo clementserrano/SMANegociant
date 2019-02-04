@@ -72,7 +72,6 @@ public class Negociant extends Agent implements Runnable {
                     dernierBillet.put(fournisseur, billet);
 
                     if (!billet.getLieuArrivee().equals(destinationSouhaitee)
-                            || billet.getPrix() > budgetSouhaiteeMax
                             || nbSoumission.get(fournisseur) > nbSoumissionMax) {
                         performatif.setAction(Action.REFUSE);
                     } else {
@@ -119,6 +118,9 @@ public class Negociant extends Agent implements Runnable {
     }
 
     public Double calculerPrixRetour(Double prixRecu, Agent fournisseur) {
+        if (prixRecu > budgetSouhaiteeMax) {
+            return budgetSouhaiteeMax;
+        }
         if (avantDerniereOffre.get(fournisseur) == null) {
             return budgetSouhaiteeMin;
         } else {

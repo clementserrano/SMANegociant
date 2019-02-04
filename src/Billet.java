@@ -7,6 +7,25 @@ public class Billet {
     private Date dateArrivee;
     private Double prix;
 
+    public Billet() {
+    }
+
+    public Billet(Billet billet, Double prix) {
+        lieuArrivee = billet.lieuArrivee;
+        lieuDepart = billet.lieuDepart;
+        dateDepart = billet.dateDepart;
+        dateArrivee = billet.dateArrivee;
+        this.prix = prix;
+    }
+
+    public Billet(Billet billet) {
+        lieuArrivee = billet.lieuArrivee;
+        lieuDepart = billet.lieuDepart;
+        dateDepart = billet.dateDepart;
+        dateArrivee = billet.dateArrivee;
+        this.prix = billet.prix;
+    }
+
     public Lieu getLieuDepart() {
         return lieuDepart;
     }
