@@ -20,6 +20,8 @@ public class Negociant extends Agent implements Runnable {
     private Map<Agent, Double> derniereOffre;
     private Map<Agent, Double> derniereSoumission;
 
+    private Map<Agent, Billet> dernierBillet;
+
     private Billet billetAchete;
 
     public Negociant() {
@@ -28,6 +30,7 @@ public class Negociant extends Agent implements Runnable {
         avantDerniereOffre = new HashMap<>();
         derniereOffre = new HashMap<>();
         derniereSoumission = new HashMap<>();
+        dernierBillet = new HashMap<>();
         batFournisseurs = BoiteAuxLettres.getBatFournisseur();
         batNegociants = BoiteAuxLettres.getBatNegociant();
     }
@@ -42,7 +45,7 @@ public class Negociant extends Agent implements Runnable {
                 e.printStackTrace();
             }
         }
-        System.out.println("Négociant terminé");
+        System.out.println(getName() + " terminé");
     }
 
     public void recupererCourrier() {
@@ -54,6 +57,7 @@ public class Negociant extends Agent implements Runnable {
             if (avantDerniereOffre.get(fournisseur) == null) avantDerniereOffre.put(fournisseur, null);
             if (derniereOffre.get(fournisseur) == null) derniereOffre.put(fournisseur, null);
             if (derniereSoumission.get(fournisseur) == null) derniereSoumission.put(fournisseur, null);
+            if (dernierBillet.get(fournisseur) == null) derniereSoumission.put(fournisseur, null);
 
             switch (message.getPerformatif().getAction()) {
                 case OFFRE:
@@ -65,6 +69,8 @@ public class Negociant extends Agent implements Runnable {
                     performatif.setDeadLine(Utils.datePlusDays(10));
 
                     Billet billet = message.getPerformatif().getBillet();
+                    dernierBillet.put(fournisseur, billet);
+
                     if (!billet.getLieuArrivee().equals(destinationSouhaitee)
                             || billet.getPrix() > budgetSouhaiteeMax
                             || nbSoumission.get(fournisseur) > nbSoumissionMax) {
@@ -86,10 +92,21 @@ public class Negociant extends Agent implements Runnable {
                     }
                     performatif.setBillet(billet);
                     reponse.setPerformatif(performatif);
-                    batFournisseurs.poster(message.getAgentEmetteur(), reponse);
+                    batFournisseurs.poster(fournisseur, reponse);
                     break;
                 case VALIDER:
                     billetAchete = message.getPerformatif().getBillet();
+                    derniereOffre.keySet().stream().filter(n -> !n.equals(message.getAgentEmetteur())).forEach(n -> {
+                        Message refus = new Message();
+                        refus.setAgentEmetteur(this);
+                        refus.setAgentDestinataire(n);
+                        Performatif p = new Performatif();
+                        p.setAction(Action.REFUSE);
+                        p.setDeadLine(Utils.datePlusDays(10));
+                        p.setBillet(dernierBillet.get(n));
+                        refus.setPerformatif(p);
+                        batNegociants.poster(n, refus);
+                    });
                     break;
                 case REFUSE:
                     nbSoumission.put(fournisseur, 0);
