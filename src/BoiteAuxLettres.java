@@ -18,6 +18,9 @@ public class BoiteAuxLettres {
         if (mapMessages.get(destinataire) == null) mapMessages.put(destinataire, new ArrayList<>());
         mapMessages.get(destinataire).add(message);
         System.out.println(message);
+        if (destinataire.getGui() != null){
+            destinataire.getGui().update(message);
+        }
     }
 
     public Message recuperer(Agent proprietaire) {

@@ -22,6 +22,7 @@ public class Fournisseur extends Agent implements Runnable {
     List<Negociant> negociantList;
 
     public Fournisseur() {
+        this.type = "fournisseur";
         negociants = new ArrayList<>();
         batNegociants = BoiteAuxLettres.getBatNegociant();
         batFournisseurs = BoiteAuxLettres.getBatFournisseur();
