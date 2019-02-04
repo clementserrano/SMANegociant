@@ -1,3 +1,5 @@
+import javafx.util.Pair;
+
 import java.util.ArrayList;
 
 public class Main {
@@ -9,8 +11,25 @@ public class Main {
         //      - 3: Deuxieme échange 2 Négociants, 1 Fournisseur
         //      - 5: Troisieme échange 2 Négociants, 2 Fournisseur
         //      - 7: Troisieme échange 3 Négociants, 3 Fournisseur
+        Pair<ArrayList<Negociant>,ArrayList<Fournisseur>> list = lists(3);
 
-        int index = 3;
+        runThreads(list.getValue(), list.getKey());}
+
+    private static void runThreads(ArrayList<Fournisseur> listFournisseurs, ArrayList<Negociant> listNegociants) {
+        for (Fournisseur fournisseur: listFournisseurs) {
+            new Thread(fournisseur).start();
+        }
+        for (Negociant negociant: listNegociants) {
+            new Thread(negociant).start();
+        }
+    }
+
+    public static Pair<ArrayList<Negociant>,ArrayList<Fournisseur>> lists(int index){
+        // index:
+        //      - 2: Premier échange 1 Négociant, 1 Fournisseur
+        //      - 3: Deuxieme échange 2 Négociants, 1 Fournisseur
+        //      - 5: Troisieme échange 2 Négociants, 2 Fournisseur
+        //      - 7: Troisieme échange 3 Négociants, 3 Fournisseur
 
         ArrayList<Fournisseur> listFournisseurs = new ArrayList<>();
         ArrayList<Negociant> listNegociants= new ArrayList<>();
@@ -123,7 +142,7 @@ public class Main {
             billet_3_1.setLieuArrivee(Lieu.MARSEILLE);
             billet_3_1.setDateDepart(Utils.datePlusDays(10));
             billet_3_1.setDateArrivee(Utils.datePlusDays(11));
-            
+
             Billet billet_3_2 = new Billet();
             billet_3_2.setLieuDepart(Lieu.PARIS);
             billet_3_2.setLieuArrivee(Lieu.MARSEILLE);
@@ -239,69 +258,6 @@ public class Main {
             System.out.println("\n\n");
         }
 
-
-
-        setAndRunThreads(listFournisseurs,listNegociants);
-//
-//        Negociant negociant2 = new Negociant();
-//        negociant2.setNbSoumissionMax(6);
-//        negociant2.setPourcentCroissance(0.25);
-//        negociant2.setDepartSouhaite(Lieu.PARIS);
-//        negociant2.setDestinationSouhaitee(Lieu.MARSEILLE);
-//        negociant2.setBudgetSouhaiteeMin(150.0);
-//        negociant2.setBudgetSouhaiteeMax(600.0);
-//        negociant2.setDateAchatAuPlusTard(Utils.datePlusDays(6));
-//        negociant2.setName("Négociant 2");
-//
-//        Fournisseur fournisseur = new Fournisseur();
-//
-//        Billet billet = new Billet();
-//        billet.setLieuDepart(Lieu.PARIS);
-//        billet.setLieuArrivee(Lieu.MARSEILLE);
-//
-//        billet.setDateDepart(Utils.datePlusDays(10));
-//        billet.setDateArrivee(Utils.datePlusDays(11));
-//
-//        fournisseur.setValeurDepart(400.0);
-//        fournisseur.setPrixMin(100.0);
-//        fournisseur.setBillet(billet);
-//        fournisseur.setDateVenteAuPlusTard(Utils.datePlusDays(9));
-//
-//        fournisseur.getNegociants().add(negociant);
-//        fournisseur.getNegociants().add(negociant2);
-//        fournisseur.setName("Fournisseur 1");
-//
-//        Fournisseur fournisseur2 = new Fournisseur();
-//
-//        Billet billet2 = new Billet();
-//        billet2.setLieuDepart(Lieu.PARIS);
-//        billet2.setLieuArrivee(Lieu.MARSEILLE);
-//
-//        billet2.setDateDepart(Utils.datePlusDays(10));
-//        billet2.setDateArrivee(Utils.datePlusDays(11));
-//
-//        fournisseur2.setValeurDepart(400.0);
-//        fournisseur2.setPrixMin(100.0);
-//        fournisseur2.setBillet(billet2);
-//        fournisseur2.setDateVenteAuPlusTard(Utils.datePlusDays(9));
-//
-//        fournisseur2.getNegociants().add(negociant);
-//        fournisseur2.getNegociants().add(negociant2);
-//        fournisseur2.setName("Fournisseur 2");
-//
-//        negociant.getFournisseurs().add(fournisseur);
-//        negociant.getFournisseurs().add(fournisseur2);
-//        negociant2.getFournisseurs().add(fournisseur);
-//        negociant2.getFournisseurs().add(fournisseur2);
-//
-//        new Thread(fournisseur).start();
-//        new Thread(fournisseur2).start();
-//        new Thread(negociant).start();
-//        new Thread(negociant2).start();
-    }
-
-    private static void setAndRunThreads(ArrayList<Fournisseur> listFournisseurs, ArrayList<Negociant> listNegociants) {
-
         for (Negociant negociant: listNegociants) {
             for (Fournisseur fournisseur: listFournisseurs) {
                 negociant.getFournisseurs().add(fournisseur);
@@ -312,11 +268,7 @@ public class Main {
                 fournisseur.getNegociants().add(negociant);
             }
         }
-        for (Fournisseur fournisseur: listFournisseurs) {
-            new Thread(fournisseur).start();
-        }
-        for (Negociant negociant: listNegociants) {
-            new Thread(negociant).start();
-        }
+
+        return new Pair<>(listNegociants,listFournisseurs);
     }
 }

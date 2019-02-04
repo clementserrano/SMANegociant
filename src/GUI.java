@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ public class GUI extends Application {
 
     private List<Fournisseur> fournisseurs;
     private List<Negociant> negociants;
+    private final static int INDEX = 7;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -145,13 +147,12 @@ public class GUI extends Application {
         negociant2.getFournisseurs().add(fournisseur1);
         negociant2.getFournisseurs().add(fournisseur2);
 
+        Pair<ArrayList<Negociant>,ArrayList<Fournisseur>> list = Main.lists(INDEX);
 
-        fournisseurs = new ArrayList<>();
-        fournisseurs.add(fournisseur1);
-        fournisseurs.add(fournisseur2);
-        negociants = new ArrayList<>();
-        negociants.add(negociant1);
-        negociants.add(negociant2);
+        fournisseurs = list.getValue();
+        negociants = list.getKey();
+        System.out.println(list.getValue());
+        System.out.println(list.getKey());
 
         fournisseurs.stream().forEach(f -> f.setGui(this));
         negociants.stream().forEach(n -> n.setGui(this));
