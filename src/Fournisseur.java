@@ -144,7 +144,6 @@ public class Fournisseur extends Agent implements Runnable {
             valid.setPerformatif(performatif);
             batNegociants.poster(valid.getAgentDestinataire(), valid);
 
-            this.billet = null;
             derniereOffre.keySet().stream().filter(n -> !n.equals(meilleur)).forEach(n -> {
                 Message refus = new Message();
                 refus.setAgentEmetteur(this);
@@ -156,6 +155,8 @@ public class Fournisseur extends Agent implements Runnable {
                 refus.setPerformatif(p);
                 batNegociants.poster(n, refus);
             });
+
+            this.billet = null;
         }
     }
 
