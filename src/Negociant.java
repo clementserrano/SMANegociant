@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class Negociant extends Agent implements Runnable {
 
@@ -14,18 +12,22 @@ public class Negociant extends Agent implements Runnable {
     private Double budgetSouhaiteeMin;
     private Date dateAchatAuPlusTard;
 
-    private Integer nbSoumission;
     private Integer nbSoumissionMax;
     private Double pourcentCroissance;
-    private Double avantDerniereOffre;
-    private Double derniereOffre;
-    private Double derniereSoumission;
+
+    private Map<Agent, Integer> nbSoumission;
+    private Map<Agent, Double> avantDerniereOffre;
+    private Map<Agent, Double> derniereOffre;
+    private Map<Agent, Double> derniereSoumission;
 
     private Billet billetAchete;
 
     public Negociant() {
         fournisseurs = new ArrayList<>();
-        nbSoumission = 0;
+        nbSoumission = new HashMap<>();
+        avantDerniereOffre = new HashMap<>();
+        derniereOffre = new HashMap<>();
+        derniereSoumission = new HashMap<>();
         batFournisseurs = BoiteAuxLettres.getBatFournisseur();
         batNegociants = BoiteAuxLettres.getBatNegociant();
     }
@@ -45,13 +47,19 @@ public class Negociant extends Agent implements Runnable {
 
     public void recupererCourrier() {
         Message message = batNegociants.recuperer(this);
-
         if (message != null) {
+            Agent fournisseur = message.getAgentEmetteur();
+
+            if (nbSoumission.get(fournisseur) == null) nbSoumission.put(fournisseur, 0);
+            if (avantDerniereOffre.get(fournisseur) == null) avantDerniereOffre.put(fournisseur, null);
+            if (derniereOffre.get(fournisseur) == null) derniereOffre.put(fournisseur, null);
+            if (derniereSoumission.get(fournisseur) == null) derniereSoumission.put(fournisseur, null);
+
             switch (message.getPerformatif().getAction()) {
                 case OFFRE:
                     Message reponse = new Message();
                     reponse.setAgentEmetteur(this);
-                    reponse.setAgentDestinataire(message.getAgentEmetteur());
+                    reponse.setAgentDestinataire(fournisseur);
 
                     Performatif performatif = new Performatif();
                     performatif.setDeadLine(Utils.datePlusDays(10));
@@ -59,19 +67,20 @@ public class Negociant extends Agent implements Runnable {
                     Billet billet = message.getPerformatif().getBillet();
                     if (!billet.getLieuArrivee().equals(destinationSouhaitee)
                             || billet.getPrix() > budgetSouhaiteeMax
-                            || nbSoumission > nbSoumissionMax) {
+                            || nbSoumission.get(fournisseur) > nbSoumissionMax) {
                         performatif.setAction(Action.REFUSE);
                     } else {
-                        avantDerniereOffre = derniereOffre;
-                        derniereOffre = billet.getPrix();
-                        derniereSoumission = calculerPrixRetour(billet.getPrix());
-                        if (derniereSoumission < budgetSouhaiteeMin) derniereSoumission = budgetSouhaiteeMin;
-                        if (billet.getPrix() <= derniereSoumission) {
-                            derniereSoumission = billet.getPrix();
+                        avantDerniereOffre.put(fournisseur, derniereOffre.get(fournisseur));
+                        derniereOffre.put(fournisseur, billet.getPrix());
+                        derniereSoumission.put(fournisseur, calculerPrixRetour(billet.getPrix(), fournisseur));
+                        if (derniereSoumission.get(fournisseur) < budgetSouhaiteeMin)
+                            derniereSoumission.put(fournisseur, budgetSouhaiteeMin);
+                        if (billet.getPrix() <= derniereSoumission.get(fournisseur)) {
+                            derniereSoumission.put(fournisseur, billet.getPrix());
                             performatif.setAction(Action.ACCEPT);
                         } else {
-                            billet.setPrix(derniereSoumission);
-                            nbSoumission++;
+                            billet.setPrix(derniereSoumission.get(fournisseur));
+                            nbSoumission.put(fournisseur, nbSoumission.get(fournisseur) + 1);
                             performatif.setAction(Action.CONTRE_OFFRE);
                         }
                     }
@@ -83,25 +92,26 @@ public class Negociant extends Agent implements Runnable {
                     billetAchete = message.getPerformatif().getBillet();
                     break;
                 case REFUSE:
-                    nbSoumission = 0;
-                    avantDerniereOffre = null;
-                    derniereOffre = null;
-                    derniereSoumission = null;
+                    nbSoumission.put(fournisseur, 0);
+                    avantDerniereOffre.put(fournisseur, null);
+                    derniereOffre.put(fournisseur, null);
+                    derniereSoumission.put(fournisseur, null);
                     break;
             }
         }
     }
 
-    public Double calculerPrixRetour(Double prixRecu) {
-        if (avantDerniereOffre == null) {
+    public Double calculerPrixRetour(Double prixRecu, Agent fournisseur) {
+        if (avantDerniereOffre.get(fournisseur) == null) {
             return budgetSouhaiteeMin;
         } else {
-            if (prixRecu < derniereSoumission) return derniereSoumission;
-            Double ecart = avantDerniereOffre - derniereOffre;
-            if (ecart > derniereSoumission * pourcentCroissance) {
-                return derniereSoumission + derniereSoumission * pourcentCroissance;
+            Double lastSoumission = derniereSoumission.get(fournisseur);
+            if (prixRecu < lastSoumission) return lastSoumission;
+            Double ecart = avantDerniereOffre.get(fournisseur) - derniereOffre.get(fournisseur);
+            if (ecart > lastSoumission * pourcentCroissance) {
+                return lastSoumission + lastSoumission * pourcentCroissance;
             } else {
-                return derniereSoumission + ecart;
+                return lastSoumission + ecart;
             }
         }
     }
@@ -170,14 +180,6 @@ public class Negociant extends Agent implements Runnable {
         return budgetSouhaiteeMin;
     }
 
-    public Integer getNbSoumission() {
-        return nbSoumission;
-    }
-
-    public void setNbSoumission(Integer nbSoumission) {
-        this.nbSoumission = nbSoumission;
-    }
-
     public Integer getNbSoumissionMax() {
         return nbSoumissionMax;
     }
@@ -186,27 +188,35 @@ public class Negociant extends Agent implements Runnable {
         return pourcentCroissance;
     }
 
-    public Double getAvantDerniereOffre() {
+    public Map<Agent, Integer> getNbSoumission() {
+        return nbSoumission;
+    }
+
+    public void setNbSoumission(Map<Agent, Integer> nbSoumission) {
+        this.nbSoumission = nbSoumission;
+    }
+
+    public Map<Agent, Double> getAvantDerniereOffre() {
         return avantDerniereOffre;
     }
 
-    public void setAvantDerniereOffre(Double avantDerniereOffre) {
+    public void setAvantDerniereOffre(Map<Agent, Double> avantDerniereOffre) {
         this.avantDerniereOffre = avantDerniereOffre;
     }
 
-    public Double getDerniereOffre() {
+    public Map<Agent, Double> getDerniereOffre() {
         return derniereOffre;
     }
 
-    public void setDerniereOffre(Double derniereOffre) {
+    public void setDerniereOffre(Map<Agent, Double> derniereOffre) {
         this.derniereOffre = derniereOffre;
     }
 
-    public Double getDerniereSoumission() {
+    public Map<Agent, Double> getDerniereSoumission() {
         return derniereSoumission;
     }
 
-    public void setDerniereSoumission(Double derniereSoumission) {
+    public void setDerniereSoumission(Map<Agent, Double> derniereSoumission) {
         this.derniereSoumission = derniereSoumission;
     }
 
