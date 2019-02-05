@@ -108,8 +108,6 @@ public class GUI extends Application {
 
         fournisseurs = list.getValue();
         negociants = list.getKey();
-        System.out.println(list.getValue());
-        System.out.println(list.getKey());
 
         fournisseurs.stream().forEach(f -> f.setGui(this));
         negociants.stream().forEach(n -> n.setGui(this));
