@@ -20,11 +20,11 @@ public class GUI extends Application {
     private List<Fournisseur> fournisseurs;
     private List<Negociant> negociants;
 
-    // index:
-    //      - 2: Premier échange 1 Négociant, 1 Fournisseur
-    //      - 3: Deuxieme échange 2 Négociants, 1 Fournisseur
-    //      - 5: Troisieme échange 2 Négociants, 2 Fournisseurs
-    //      - 7: Troisieme échange 3 Négociants, 3 Fournisseurs
+//      index:
+//      - 2: Premier échange 1 Négociant, 1 Fournisseur
+//      - 3: Deuxieme échange 2 Négociants, 1 Fournisseur
+//      - 5: Troisieme échange 2 Négociants, 2 Fournisseurs
+//      - 7: Troisieme échange 3 Négociants, 3 Fournisseurs
     private final static int INDEX = 7;
 
     @Override
@@ -104,61 +104,10 @@ public class GUI extends Application {
     }
 
     private void fillList() {
-        Negociant negociant1 = new Negociant();
-        negociant1.setNbSoumissionMax(5);
-        negociant1.setPourcentCroissance(0.3);
-        negociant1.setDepartSouhaite(Lieu.PARIS);
-        negociant1.setDestinationSouhaitee(Lieu.MARSEILLE);
-        negociant1.setBudgetSouhaiteeMin(110.0);
-        negociant1.setBudgetSouhaiteeMax(500.0);
-        negociant1.setDateAchatAuPlusTard(Utils.datePlusDays(5)); // dans 5 jours
-        negociant1.setName("Négociant 1");
-        Negociant negociant2 = new Negociant();
-        negociant2.setNbSoumissionMax(6);
-        negociant2.setPourcentCroissance(0.25);
-        negociant2.setDepartSouhaite(Lieu.PARIS);
-        negociant2.setDestinationSouhaitee(Lieu.MARSEILLE);
-        negociant2.setBudgetSouhaiteeMin(150.0);
-        negociant2.setBudgetSouhaiteeMax(600.0);
-        negociant2.setDateAchatAuPlusTard(Utils.datePlusDays(6));
-        negociant2.setName("Négociant 2");
-        Fournisseur fournisseur1 = new Fournisseur();
-        Billet billet = new Billet();
-        billet.setLieuDepart(Lieu.PARIS);
-        billet.setLieuArrivee(Lieu.MARSEILLE);
-        billet.setDateDepart(Utils.datePlusDays(10));
-        billet.setDateArrivee(Utils.datePlusDays(11));
-        fournisseur1.setValeurDepart(400.0);
-        fournisseur1.setPrixMin(100.0);
-        fournisseur1.setBillet(billet);
-        fournisseur1.setDateVenteAuPlusTard(Utils.datePlusDays(9));
-        fournisseur1.getNegociants().add(negociant1);
-        fournisseur1.getNegociants().add(negociant2);
-        fournisseur1.setName("Fournisseur 1");
-        Fournisseur fournisseur2 = new Fournisseur();
-        Billet billet2 = new Billet();
-        billet2.setLieuDepart(Lieu.PARIS);
-        billet2.setLieuArrivee(Lieu.MARSEILLE);
-        billet2.setDateDepart(Utils.datePlusDays(10));
-        billet2.setDateArrivee(Utils.datePlusDays(11));
-        fournisseur2.setValeurDepart(400.0);
-        fournisseur2.setPrixMin(100.0);
-        fournisseur2.setBillet(billet2);
-        fournisseur2.setDateVenteAuPlusTard(Utils.datePlusDays(9));
-        fournisseur2.getNegociants().add(negociant1);
-        fournisseur2.getNegociants().add(negociant2);
-        fournisseur2.setName("Fournisseur 2");
-        negociant1.getFournisseurs().add(fournisseur1);
-        negociant1.getFournisseurs().add(fournisseur2);
-        negociant2.getFournisseurs().add(fournisseur1);
-        negociant2.getFournisseurs().add(fournisseur2);
-
-        Pair<ArrayList<Negociant>, ArrayList<Fournisseur>> list = Main.lists(INDEX);
+        Pair<ArrayList<Negociant>,ArrayList<Fournisseur>> list = Main.lists(INDEX);
 
         fournisseurs = list.getValue();
         negociants = list.getKey();
-        System.out.println(list.getValue());
-        System.out.println(list.getKey());
 
         fournisseurs.stream().forEach(f -> f.setGui(this));
         negociants.stream().forEach(n -> n.setGui(this));
