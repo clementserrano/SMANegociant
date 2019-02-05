@@ -14,12 +14,14 @@ public class BoiteAuxLettres {
         mapMessages = new HashMap<>();
     }
 
-    public synchronized void poster(Agent destinataire, Message message) {
+    public synchronized void poster(Agent destinataire, Message message, boolean display) {
         if (mapMessages.get(destinataire) == null) mapMessages.put(destinataire, new ArrayList<>());
         mapMessages.get(destinataire).add(message);
-        System.out.println(message);
-        if (destinataire.getGui() != null){
-            destinataire.getGui().update(message);
+        if (display) {
+            System.out.println(message);
+            if (destinataire.getGui() != null) {
+                destinataire.getGui().update(message);
+            }
         }
     }
 

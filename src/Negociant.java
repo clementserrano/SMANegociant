@@ -24,6 +24,8 @@ public class Negociant extends Agent implements Runnable {
 
     private Billet billetAchete;
 
+    private HashMap<Agent, Boolean> offreAcceptee;
+
     public Negociant() {
         this.type = "negociant";
         fournisseurs = new ArrayList<>();
@@ -34,6 +36,7 @@ public class Negociant extends Agent implements Runnable {
         dernierBillet = new HashMap<>();
         batFournisseurs = BoiteAuxLettres.getBatFournisseur();
         batNegociants = BoiteAuxLettres.getBatNegociant();
+        offreAcceptee = new HashMap<>();
     }
 
     @Override
@@ -59,6 +62,7 @@ public class Negociant extends Agent implements Runnable {
             if (derniereOffre.get(fournisseur) == null) derniereOffre.put(fournisseur, null);
             if (derniereSoumission.get(fournisseur) == null) derniereSoumission.put(fournisseur, null);
             if (dernierBillet.get(fournisseur) == null) derniereSoumission.put(fournisseur, null);
+            if (offreAcceptee.get(fournisseur) == null) offreAcceptee.put(fournisseur, false);
 
             switch (message.getPerformatif().getAction()) {
                 case OFFRE:
@@ -75,6 +79,8 @@ public class Negociant extends Agent implements Runnable {
                     if (!billet.getLieuArrivee().equals(destinationSouhaitee)
                             || nbSoumission.get(fournisseur) > nbSoumissionMax) {
                         performatif.setAction(Action.REFUSE);
+                        derniereOffre.remove(fournisseur);
+
                     } else {
                         avantDerniereOffre.put(fournisseur, derniereOffre.get(fournisseur));
                         derniereOffre.put(fournisseur, billet.getPrix());
@@ -82,8 +88,13 @@ public class Negociant extends Agent implements Runnable {
                         if (derniereSoumission.get(fournisseur) < budgetSouhaiteeMin)
                             derniereSoumission.put(fournisseur, budgetSouhaiteeMin);
                         if (billet.getPrix() <= derniereSoumission.get(fournisseur)) {
+                            if (offreAcceptee.containsValue(true)) {
+                                batNegociants.poster(this, message, false);
+                                break;
+                            }
                             derniereSoumission.put(fournisseur, billet.getPrix());
                             performatif.setAction(Action.ACCEPT);
+                            offreAcceptee.put(fournisseur, true);
                         } else {
                             billet.setPrix(derniereSoumission.get(fournisseur));
                             nbSoumission.put(fournisseur, nbSoumission.get(fournisseur) + 1);
@@ -92,7 +103,7 @@ public class Negociant extends Agent implements Runnable {
                     }
                     performatif.setBillet(billet);
                     reponse.setPerformatif(performatif);
-                    batFournisseurs.poster(fournisseur, reponse);
+                    batFournisseurs.poster(fournisseur, reponse, true);
                     break;
                 case VALIDER:
                     billetAchete = message.getPerformatif().getBillet();
@@ -105,7 +116,7 @@ public class Negociant extends Agent implements Runnable {
                         p.setDeadLine(Utils.datePlusDays(10));
                         p.setBillet(dernierBillet.get(n));
                         refus.setPerformatif(p);
-                        batNegociants.poster(n, refus);
+                        batNegociants.poster(n, refus, true);
                     });
                     break;
                 case REFUSE:
@@ -113,6 +124,7 @@ public class Negociant extends Agent implements Runnable {
                     avantDerniereOffre.put(fournisseur, null);
                     derniereOffre.put(fournisseur, null);
                     derniereSoumission.put(fournisseur, null);
+                    offreAcceptee.put(fournisseur, false);
                     break;
             }
         }

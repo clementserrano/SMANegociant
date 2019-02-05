@@ -1,4 +1,5 @@
 import java.util.Date;
+import java.util.Objects;
 
 public class Billet {
     private Lieu lieuDepart;
@@ -15,7 +16,7 @@ public class Billet {
         lieuDepart = billet.lieuDepart;
         dateDepart = billet.dateDepart;
         dateArrivee = billet.dateArrivee;
-        this.prix = prix;
+        this.prix = prix.doubleValue();
     }
 
     public Billet(Billet billet) {
@@ -23,7 +24,7 @@ public class Billet {
         lieuDepart = billet.lieuDepart;
         dateDepart = billet.dateDepart;
         dateArrivee = billet.dateArrivee;
-        this.prix = billet.prix;
+        this.prix = billet.prix.doubleValue();
     }
 
     public Lieu getLieuDepart() {
@@ -75,5 +76,22 @@ public class Billet {
                 ", dateArrivee=" + dateArrivee +
                 ", prix=" + prix +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Billet billet = (Billet) o;
+        return lieuDepart == billet.lieuDepart &&
+                lieuArrivee == billet.lieuArrivee &&
+                Objects.equals(dateDepart, billet.dateDepart) &&
+                Objects.equals(dateArrivee, billet.dateArrivee) &&
+                Objects.equals(prix, billet.prix);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(lieuDepart, lieuArrivee, dateDepart, dateArrivee, prix);
     }
 }

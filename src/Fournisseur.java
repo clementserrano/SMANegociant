@@ -1,7 +1,4 @@
-import javafx.util.Pair;
-
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Fournisseur extends Agent implements Runnable {
 
@@ -72,7 +69,7 @@ public class Fournisseur extends Agent implements Runnable {
             performatif.setDeadLine(Utils.datePlusDays(10));
 
             message.setPerformatif(performatif);
-            batNegociants.poster(negociant, message);
+            batNegociants.poster(negociant, message, true);
         });
 
     }
@@ -85,7 +82,7 @@ public class Fournisseur extends Agent implements Runnable {
 
             switch (message.getPerformatif().getAction()) {
                 case ACCEPT:
-                    if (derniereSoumission.get(negociant) == billet.getPrix()) {
+                    if (derniereSoumission.get(negociant).equals(billet.getPrix())) {
                         propositionFinale.put(negociant, billet.getPrix());
                         derniereOffreBillet.put(negociant, billet);
                     }
@@ -105,9 +102,10 @@ public class Fournisseur extends Agent implements Runnable {
                     performatif.setBillet(billet);
                     performatif.setAction(Action.OFFRE);
                     reponse.setPerformatif(performatif);
-                    batNegociants.poster(negociant, reponse);
+                    batNegociants.poster(negociant, reponse, true);
                     break;
                 case REFUSE:
+                    derniereOffre.remove(negociant);
                     break;
             }
         }
@@ -144,7 +142,7 @@ public class Fournisseur extends Agent implements Runnable {
             performatif.setBillet(new Billet(derniereOffreBillet.get(meilleur)));
             performatif.setAction(Action.VALIDER);
             valid.setPerformatif(performatif);
-            batNegociants.poster(valid.getAgentDestinataire(), valid);
+            batNegociants.poster(valid.getAgentDestinataire(), valid, true);
 
             derniereOffre.keySet().stream().filter(n -> !n.equals(meilleur)).forEach(n -> {
                 Message refus = new Message();
@@ -155,7 +153,7 @@ public class Fournisseur extends Agent implements Runnable {
                 p.setDeadLine(Utils.datePlusDays(10));
                 p.setBillet(new Billet(derniereOffreBillet.get(n)));
                 refus.setPerformatif(p);
-                batNegociants.poster(n, refus);
+                batNegociants.poster(n, refus, true);
             });
 
             this.billet = null;

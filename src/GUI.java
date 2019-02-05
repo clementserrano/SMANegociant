@@ -63,7 +63,7 @@ public class GUI extends Application {
         }
         gridPane.setGridLinesVisible(true);
 
-        Scene scene = new Scene(gridPane);
+        Scene scene = new Scene(gridPane, 1500, 500);
         primaryStage.setScene(scene);
         primaryStage.show();
 
@@ -153,7 +153,7 @@ public class GUI extends Application {
         negociant2.getFournisseurs().add(fournisseur1);
         negociant2.getFournisseurs().add(fournisseur2);
 
-        Pair<ArrayList<Negociant>,ArrayList<Fournisseur>> list = Main.lists(INDEX);
+        Pair<ArrayList<Negociant>, ArrayList<Fournisseur>> list = Main.lists(INDEX);
 
         fournisseurs = list.getValue();
         negociants = list.getKey();
